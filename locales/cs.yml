@@ -1,0 +1,79 @@
+cs:
+  vagrant_rackspace:
+    already_created: |-
+      Server je již vytvořen.
+    deleting_server: |-
+      Mazaní serveru...
+    finding_flavor: |-
+      Hledání typu serveru...
+    finding_image: |-
+      Hledání obrazu serveru...
+    launching_server: |-
+      Spouštění serveru s následujícím nastavením...
+    not_created: |-
+      Server nebyl ještě vytvořen. Nejprve spusťte `vagrant up`.
+    ready: |-
+      Server je připraven!
+    rsync_folder: |-
+      Synchronizování složky: %{hostpath} => %{guestpath}
+    waiting_for_build: |-
+      Čekání na server než bude sestaven...
+    waiting_for_ssh: |-
+      Čekání na SSH než bude k dispozici...
+    warn_insecure_ssh: |-
+      Pozor! Nezadáním vlastního veřejného/soukromého páru klíčů,
+      Vagrant použije výchozí nedůvěrihodný pár klíčů, který je dodáván
+      společně s Vagrantem. Zatím co tohle není problém pro lokální
+      vývoj, pro vzdálené servery to není zcela bezpečné. Prosím, zadejte
+      vlastní veřejný/soukromý pár klíčů.
+    warn_networks: |-
+      Pozor! Rackspave rozšíření nepodporuje žádné z vyšších síťových
+      nastavení Vagrantu (`config.vm.network`). Budou tiše ignorovány.
+
+    config:
+      api_key_required: |-
+        API klíč je požadován.
+      public_key_not_found: |-
+        Soubor veřejného klíče nemohl být nalezen. Prosím, ujištěte se, že
+        jste zadali správnou cestu.
+      username_required: |-
+        Uživatelské jméno je povinné.
+
+    errors:
+      create_bad_state: |-
+        Při vytváření serveru vznikl nečekávaný stav:transitioned '%{state}',
+        místo správného startu. Abyste zjistili co se událo během toho stavu,
+        spusťte `vagrant status`, nebo pokud chcete začít znovu `vagrant destroy`.
+      no_matching_flavor: |-
+        Žádný odpovídající typ nebyl nalezen. Prosím, zkontrolujte vaše nastavení typu,
+        abyste se ujisťili, že jste vybrali správný obraz.
+      no_matching_image: |-
+        Žádný odpovídající obraz nebyl nalezen! Prosím, zkontrolujte nastavení obrazu,
+        abyste se ujisťili, že jste vybrali správný obraz.
+      rsync_error: |-
+        Nastala chyba při pokusu sychronizovat sdílenou složku.
+        Please, prozkoumejte chybovou hlášku níže pro více informací.
+
+        Cesta hostitele: %{hostpath}
+        Cesta hosta: %{guestpath}
+        Chyba: %{stderr}
+
+    states:
+      short_active: |-
+        aktivní
+      long_active: |-
+        Server je zapnut a beží. Spusťte pro přístě do něho `vagrant ssh`.
+      short_build: |-
+        sestavování
+      long_build: |-
+        Server se momentálně sestavuje. Musíte počkat než bude hotov, abyste
+        mohli k němu přistoupit. Nicméně, můžete server smazan spuštěním `vagrant destroy`.
+      short_error: |-
+        chyba
+      long_error: |-
+        Server je v chybovém stavu. Kontaktuje podporu RackSpace nebo
+        odstraňte stroj pomocí `vagrant destroy`.
+      short_not_created: |-
+        nevytvořen
+      long_not_created: |-
+        Server nebyl vytvořen. Abyste ho vytvořili, spusťte `vagrant up`.
