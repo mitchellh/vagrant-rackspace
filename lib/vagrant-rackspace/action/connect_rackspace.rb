@@ -28,7 +28,7 @@ module VagrantPlugins
                   :version                => :v2,
                   :rackspace_api_key      => api_key,
                   :rackspace_endpoint     => endpoint,
-                  :rackspace_api_auth_url => auth_url,
+                  :rackspace_auth_url     => auth_url,
                   :rackspace_username     => username
               }
           )
