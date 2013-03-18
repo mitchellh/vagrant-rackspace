@@ -14,6 +14,9 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :endpoint
 
+      # The authorisation url. This is definitely required if you're using the London DC
+      attr_accessor :auth_url
+
       # The flavor of server to launch, either the ID or name. This
       # can also be a regular expression to partially match a name.
       attr_accessor :flavor
@@ -41,6 +44,7 @@ module VagrantPlugins
       def initialize
         @api_key  = UNSET_VALUE
         @endpoint = UNSET_VALUE
+        @auth_url = UNSET_VALUE
         @flavor   = UNSET_VALUE
         @image    = UNSET_VALUE
         @public_key_path = UNSET_VALUE
@@ -51,6 +55,7 @@ module VagrantPlugins
       def finalize!
         @api_key  = nil if @api_key == UNSET_VALUE
         @endpoint = nil if @endpoint == UNSET_VALUE
+        @auth_url = nil if @auth_url == UNSET_VALUE
         @flavor   = /512MB/ if @flavor == UNSET_VALUE
         @image    = /Ubuntu/ if @image == UNSET_VALUE
         @server_name = nil if @server_name == UNSET_VALUE
