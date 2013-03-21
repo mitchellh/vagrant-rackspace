@@ -91,6 +91,7 @@ This provider exposes quite a few provider-specific configuration options:
   exact ID or name of the image, or this can be a regular expression to
   partially match some image.
 * `endpoint` - The endpoint to hit. By default this is DFW.
+* `auth_url` - Definitely required if you're using the London datacentre. YMMV from elsewhere. 
 * `public_key_path` - The path to a public key to initialize with the remote
   server. This should be the matching pair for the private key configured
   with `config.ssh.private_key_path` on Vagrant.

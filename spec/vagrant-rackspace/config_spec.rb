@@ -17,6 +17,7 @@ describe VagrantPlugins::Rackspace::Config do
     its(:public_key_path) { should eql(vagrant_public_key) }
     its(:server_name) { should be_nil }
     its(:username) { should be_nil }
+    its(:auth_url) { should be_nil }
   end
 
   describe "overriding defaults" do
