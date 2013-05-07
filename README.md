@@ -152,3 +152,34 @@ that uses it, and uses bundler to execute Vagrant:
 ```
 $ bundle exec vagrant up --provider=rackspace
 ```
+
+## Common Issues
+
+#### CentOS / RHEL SSH Issues
+
+CentOS (and presumably other RedHat variants) come with a default sudoers that
+will cause errors with SSH when vagrant runs.
+
+**Error:**
+
+```
+The following SSH command responded with a non-zero exit status.
+Vagrant assumes that this means the command failed!
+
+echo $(chef-solo --v | awk "{print \$2}" || "")
+```
+
+The only workaround at this time is to create a custom image with sudoers
+configured to work with vagrant.
+
+**Fix:**
+
+ - create machine manually or with vagrant (suggest a small instance)
+ - ssh into machine as root and edit `/etc/sudoers` with `visudo`
+ - comment out `Defaults    requiretty`
+ - comment out `Defaults   !visiblepw`
+ - from the control panel, create an image of that machine
+ - update `Vagrantfile` to use the new image instead of the "normal" one
+
+**Note:** If you need to create CentOS / RHEL machines in multiple dc's, you
+will need to do this for *every* dc.
