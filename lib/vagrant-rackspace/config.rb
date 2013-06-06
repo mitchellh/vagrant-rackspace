@@ -8,11 +8,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :api_key
 
-      # The endpoint to access RackSpace. If nil, it will default
+      # The compute_url to access RackSpace. If nil, it will default
       # to DFW.
       #
       # @return [String]
-      attr_accessor :endpoint
+      attr_accessor :compute_url
 
       # The authorisation url. This is definitely required if you're using the London DC
       attr_accessor :auth_url
@@ -42,22 +42,22 @@ module VagrantPlugins
       attr_accessor :username
 
       def initialize
-        @api_key  = UNSET_VALUE
-        @endpoint = UNSET_VALUE
-        @auth_url = UNSET_VALUE
-        @flavor   = UNSET_VALUE
-        @image    = UNSET_VALUE
+        @api_key         = UNSET_VALUE
+        @compute_url     = UNSET_VALUE
+        @auth_url        = UNSET_VALUE
+        @flavor          = UNSET_VALUE
+        @image           = UNSET_VALUE
         @public_key_path = UNSET_VALUE
-        @server_name = UNSET_VALUE
-        @username = UNSET_VALUE
+        @server_name     = UNSET_VALUE
+        @username        = UNSET_VALUE
       end
 
       def finalize!
-        @api_key  = nil if @api_key == UNSET_VALUE
-        @endpoint = nil if @endpoint == UNSET_VALUE
+        @api_key = nil if @api_key == UNSET_VALUE
+        @compute_url = nil if @compute_url == UNSET_VALUE
         @auth_url = nil if @auth_url == UNSET_VALUE
-        @flavor   = /512MB/ if @flavor == UNSET_VALUE
-        @image    = /Ubuntu/ if @image == UNSET_VALUE
+        @flavor = /512MB/ if @flavor == UNSET_VALUE
+        @image = /Ubuntu/ if @image == UNSET_VALUE
         @server_name = nil if @server_name == UNSET_VALUE
         @username = nil if @username == UNSET_VALUE
 
