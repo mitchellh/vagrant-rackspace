@@ -10,10 +10,11 @@ describe VagrantPlugins::Rackspace::Config do
       end
     end
 
-    its(:api_key)  { should be_nil }
+    its(:api_key) { should be_nil }
+    its(:endpoint) { should be_nil }
     its(:compute_url) { should be_nil }
-    its(:flavor)   { should eq(/512MB/) }
-    its(:image)    { should eq(/Ubuntu/) }
+    its(:flavor) { should eq(/512MB/) }
+    its(:image) { should eq(/Ubuntu/) }
     its(:public_key_path) { should eql(vagrant_public_key) }
     its(:server_name) { should be_nil }
     its(:username) { should be_nil }
@@ -21,13 +22,16 @@ describe VagrantPlugins::Rackspace::Config do
   end
 
   describe "overriding defaults" do
-    [:api_key,
-      :compute_url,
-      :flavor,
-      :image,
-      :public_key_path,
-      :server_name,
-      :username].each do |attribute|
+    [
+        :api_key,
+        :compute_url,
+        :endpoint,
+        :flavor,
+        :image,
+        :public_key_path,
+        :server_name,
+        :username
+    ].each do |attribute|
       it "should not default #{attribute} if overridden" do
         subject.send("#{attribute}=".to_sym, "foo")
         subject.finalize!
