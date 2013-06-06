@@ -18,6 +18,7 @@ module VagrantPlugins
           config      = env[:machine].provider_config
           api_key     = config.api_key
           compute_url = config.compute_url
+          endpoint    = config.endpoint
           auth_url    = config.auth_url
           username    = config.username
 
@@ -28,6 +29,7 @@ module VagrantPlugins
                   :version               => :v2,
                   :rackspace_api_key     => api_key,
                   :rackspace_compute_url => compute_url,
+                  :rackspace_endpoint    => endpoint,
                   :rackspace_auth_url    => auth_url,
                   :rackspace_username    => username
               }

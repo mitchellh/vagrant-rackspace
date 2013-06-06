@@ -8,10 +8,13 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :api_key
 
-      # The compute_url to access RackSpace. If nil, it will default
+      # The endpoint to access RackSpace. If nil, it will default
       # to DFW.
       #
       # @return [String]
+      attr_accessor :endpoint
+
+      # The endpoint (above) seems to have been deprecated in favour of this
       attr_accessor :compute_url
 
       # The authorisation url. This is definitely required if you're using the London DC
@@ -45,6 +48,7 @@ module VagrantPlugins
         @api_key         = UNSET_VALUE
         @compute_url     = UNSET_VALUE
         @auth_url        = UNSET_VALUE
+        @endpoint        = UNSET_VALUE
         @flavor          = UNSET_VALUE
         @image           = UNSET_VALUE
         @public_key_path = UNSET_VALUE
@@ -56,6 +60,7 @@ module VagrantPlugins
         @api_key = nil if @api_key == UNSET_VALUE
         @compute_url = nil if @compute_url == UNSET_VALUE
         @auth_url = nil if @auth_url == UNSET_VALUE
+        @endpoint = nil if @endpoint == UNSET_VALUE
         @flavor = /512MB/ if @flavor == UNSET_VALUE
         @image = /Ubuntu/ if @image == UNSET_VALUE
         @server_name = nil if @server_name == UNSET_VALUE
