@@ -39,7 +39,8 @@ describe VagrantPlugins::Rackspace::Config do
       :server_name,
       :disk_config,
       :username,
-      :admin_password].each do |attribute|
+      :admin_password,
+      :use_tty_workaround].each do |attribute|
       it "should not default #{attribute} if overridden" do
         subject.send("#{attribute}=".to_sym, "foo")
         subject.finalize!
@@ -56,7 +57,7 @@ describe VagrantPlugins::Rackspace::Config do
       subject.send(:networks).should include(VagrantPlugins::Rackspace::Config::SERVICE_NET_ID)
     end
 
-    it "should not default rsync_includes if overridden" do 
+    it "should not default rsync_includes if overridden" do
       inc = "core"
       subject.send(:rsync_include, inc)
       subject.finalize!
