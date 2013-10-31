@@ -46,7 +46,8 @@ describe VagrantPlugins::Rackspace::Config do
       :rackconnect,
       :server_name,
       :disk_config,
-      :username].each do |attribute|
+      :username,
+      :use_tty_workaround].each do |attribute|
       it "should not default #{attribute} if overridden" do
         subject.send("#{attribute}=".to_sym, "foo")
         subject.finalize!

@@ -86,6 +86,11 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :networks
 
+      # Whether to apply a workaround to disable the requiretty sudoer option.
+      #
+      # @return [Boolean]
+      attr_accessor :use_tty_workaround
+
       # Default Rackspace Cloud Network IDs
       SERVICE_NET_ID = '11111111-1111-1111-1111-111111111111'
       PUBLIC_NET_ID = '00000000-0000-0000-0000-000000000000'
@@ -103,6 +108,7 @@ module VagrantPlugins
         @username = UNSET_VALUE
         @disk_config = UNSET_VALUE
         @networks = []
+        @use_tty_workaround = UNSET_VALUE
       end
 
       def finalize!
@@ -117,6 +123,7 @@ module VagrantPlugins
         @username = nil if @username == UNSET_VALUE
         @disk_config = nil if @disk_config == UNSET_VALUE
         @networks = nil if @networks.empty?
+        @use_tty_workaround = nil if @requiretty == UNSET_VALUE
 
         if @public_key_path == UNSET_VALUE
           @public_key_path = Vagrant.source_root.join("keys/vagrant.pub")
