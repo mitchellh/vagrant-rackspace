@@ -36,7 +36,7 @@ module VagrantPlugins
 
             b2.use Provision
             b2.use SyncFolders
-            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround == true
           end
         end
       end
@@ -89,7 +89,7 @@ module VagrantPlugins
             b2.use ConnectRackspace
             b2.use Provision
             b2.use SyncFolders
-            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround == true
             b2.use WarnNetworks
             b2.use CreateServer
           end
