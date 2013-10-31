@@ -17,10 +17,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
     rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
-    rs.image    = /Ubuntu/
+    rs.image    = "CentOS 6.4"
     rs.rackspace_region = :iad
 
     # rs.rsync_include 'PATTERN'  # per man page for rsync
+    rs.use_tty_workaround = true
   end
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
