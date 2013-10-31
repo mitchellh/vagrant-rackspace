@@ -36,11 +36,16 @@ en:
       Warning! The Rackspace provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
       will be silently ignored.
+<<<<<<< HEAD
     will_not_destroy: |-
       The server will not be deleted.
     sync_folders: |-
         Rackspace support for Vagrant 1.3 has been deprecated. Please
         upgrade to the latest version of vagrant for continued support. 
+=======
+    requiretty_workaround: |-
+      Applying requiretty workaround...
+>>>>>>> add tty workaround middleware
 
     config:
       api_key_required: |-

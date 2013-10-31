@@ -43,6 +43,9 @@ module VagrantPlugins
             end
 
             b2.use Provision
+
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround
+
             if defined?(SyncedFolders)
               b2.use SyncedFolders
             else
@@ -113,11 +116,14 @@ module VagrantPlugins
 
             b2.use ConnectRackspace
             b2.use Provision
+
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround
             if defined?(SyncedFolders)
               b2.use SyncedFolders
             else
               b2.use SyncFolders
             end
+            b2.use WarnNetworks
             b2.use CreateServer
           end
         end
@@ -181,6 +187,8 @@ module VagrantPlugins
       autoload :ListKeyPairs, action_root.join("list_keypairs")
       autoload :ListNetworks, action_root.join("list_networks")
       autoload :ListServers, action_root.join("list_servers")
+      autoload :WarnNetworks, action_root.join("warn_networks")
+      autoload :TTYWorkaround, action_root.join("tty_workaround")
     end
   end
 end
