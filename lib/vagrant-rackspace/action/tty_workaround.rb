@@ -25,7 +25,10 @@ module VagrantPlugins
 
           fog_scp.upload(workaround_script.to_s, '/tmp/require_tty_workaround.sh')
           results = fog_ssh.run("sudo bash /tmp/require_tty_workaround.sh")
-          env[:ui].info(results.map(&:stdout))
+          stdout = results.map(&:stdout).join("\n")
+          stderr = results.map(&:stderr).join("\n")
+          env[:ui].info(stdout) unless stdout.empty?
+          env[:ui].error(stderr) unless stderr.empty?
         end
       end
     end
