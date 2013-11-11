@@ -32,6 +32,8 @@ en:
       Warning! The Rackspace provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
       will be silently ignored.
+    requiretty_workaround: |-
+      Applying requiretty workaround...
 
     config:
       api_key_required: |-

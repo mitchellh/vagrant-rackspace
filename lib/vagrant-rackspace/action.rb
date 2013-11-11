@@ -36,6 +36,7 @@ module VagrantPlugins
 
             b2.use Provision
             b2.use SyncFolders
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround == true
           end
         end
       end
@@ -88,6 +89,7 @@ module VagrantPlugins
             b2.use ConnectRackspace
             b2.use Provision
             b2.use SyncFolders
+            b2.use TTYWorkaround if env[:machine].provider_config.use_tty_workaround == true
             b2.use WarnNetworks
             b2.use CreateServer
           end
@@ -106,6 +108,7 @@ module VagrantPlugins
       autoload :ReadState, action_root.join("read_state")
       autoload :SyncFolders, action_root.join("sync_folders")
       autoload :WarnNetworks, action_root.join("warn_networks")
+      autoload :TTYWorkaround, action_root.join("tty_workaround")
     end
   end
 end
