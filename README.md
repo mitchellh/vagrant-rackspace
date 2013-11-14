@@ -176,7 +176,7 @@ $ bundle exec vagrant up --provider=rackspace
 
 ## Known Issues
 
-**RedHat Family (RedHat, CentOS, Fedora, Scientific Linux):** Vagrant will likely fail because on these distros "sudo requires a tty" by default.  If you are comfortable allowing sudo to not require a tty then you can override a custom sudoers file.  Use the `sudoers_path` configuration to point it to a file similar to this:
+**RedHat Family (RedHat, CentOS, Fedora, Scientific Linux):** Vagrant will likely fail because on these distros "sudo requires a tty" by default.  If you are comfortable allowing sudo to not require a tty then you can override /etc/sudoers with custom content.  You can avoid this issue by pointing the `sudoers_path` configuration to a file similar to this:
 
 ```sh
 Defaults   !visiblepw
