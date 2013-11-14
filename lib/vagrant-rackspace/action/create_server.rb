@@ -36,6 +36,12 @@ module VagrantPlugins
           default_key_path = Vagrant.source_root.join("keys/vagrant.pub").to_s
           public_key_path  = File.expand_path(config.public_key_path, env[:root_path])
 
+          if config.sudoers_path.nil?
+            sudoers_path = nil
+          else
+            sudoers_path  = File.expand_path(config.sudoers_path, env[:root_path])
+          end
+
           if default_key_path == public_key_path
             env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_ssh"))
           end
@@ -49,16 +55,19 @@ module VagrantPlugins
           env[:ui].info(" -- Name: #{server_name}")
 
           # Build the options for launching...
+          personality_files = [{
+            :path     => "/root/.ssh/authorized_keys",
+            :contents => Base64.encode64(File.read(public_key_path))
+          }]
+          personality_files << {
+            :path     => "/etc/sudoers",
+            :contents => Base64.encode64(File.read(sudoers_path))
+          } unless sudoers_path.nil?
           options = {
             :flavor_id   => flavor.id,
             :image_id    => image.id,
             :name        => server_name,
-            :personality => [
-              {
-                :path     => "/root/.ssh/authorized_keys",
-                :contents => Base64.encode64(File.read(public_key_path))
-              }
-            ]
+            :personality => personality_files
           }
           options[:disk_config] = config.disk_config if config.disk_config
           options[:networks] = config.networks if config.networks

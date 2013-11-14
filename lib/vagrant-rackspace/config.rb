@@ -54,6 +54,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :public_key_path
 
+      # The path to the sudoers file to place on the server.  Use this to control requiretty.
+      #
+      # @return [String]
+      attr_accessor :sudoers_path
+
       # The option that indicates RackConnect usage or not.
       #
       # @return [Boolean]
@@ -98,6 +103,7 @@ module VagrantPlugins
         @flavor   = UNSET_VALUE
         @image    = UNSET_VALUE
         @public_key_path = UNSET_VALUE
+        @sudoers_path = UNSET_VALUE
         @rackconnect = UNSET_VALUE
         @server_name = UNSET_VALUE
         @username = UNSET_VALUE
@@ -117,6 +123,7 @@ module VagrantPlugins
         @username = nil if @username == UNSET_VALUE
         @disk_config = nil if @disk_config == UNSET_VALUE
         @networks = nil if @networks.empty?
+        @sudoers_path = nil if @sudoers_path == UNSET_VALUE
 
         if @public_key_path == UNSET_VALUE
           @public_key_path = Vagrant.source_root.join("keys/vagrant.pub")
