@@ -30,6 +30,8 @@ $ vagrant up --provider=rackspace
 Of course prior to doing this, you'll need to obtain an Rackspace-compatible
 box file for Vagrant.
 
+If you are using a Linux distribution from the Red Hat family (RedHat, CentOS, Fedora or Scientific Linux) then see the [Known Issues](#known-issues).
+
 ## Quick Start
 
 After installing the plugin (instructions above), the quickest way to get
@@ -104,6 +106,7 @@ vagrant will authenticate against the UK authentication endpoint.
   can be overridden with this.
 * `username` - The username with which to access Rackspace.
 * `disk_config` - Disk Configuration  'AUTO' or 'MANUAL'
+* `sudoers_path` - The path to a sudoers file to use while creating the server.  There is a size limit associated with the file, so you may need to comments and whitespace to keep it under that limit.
 
 These can be set like typical provider-specific configuration:
 
@@ -170,3 +173,23 @@ that uses it, and uses bundler to execute Vagrant:
 ```
 $ bundle exec vagrant up --provider=rackspace
 ```
+
+## Known Issues
+
+**RedHat Family (RedHat, CentOS, Fedora, Scientific Linux):** Vagrant will likely fail because on these distros "sudo requires a tty" by default.  If you are comfortable allowing sudo to not require a tty then you can override a custom sudoers file.  Use the `sudoers_path` configuration to point it to a file similar to this:
+
+```sh
+Defaults   !visiblepw
+Defaults    always_set_home
+Defaults    env_reset
+Defaults    env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS_COLORS"
+Defaults    env_keep += "MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE"
+Defaults    env_keep += "LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES"
+Defaults    env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
+Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+root    ALL=(ALL)       ALL
+```
+
+**Unsupported:** We have used vagrant-rackspace with the common Linux distributions, but have not used it with other operating systems or distributions like Windows, FreeBSD, Gentoo, Arch Linux, and Vyatta.  These likely will not work without customizing the image or enhancing vagrant-rackspace.
+
