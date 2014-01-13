@@ -20,6 +20,7 @@ module VagrantPlugins
 
             b2.use ConnectRackspace
             b2.use DeleteServer
+            b2.use ProvisionerCleanup if defined?(ProvisionerCleanup)
           end
         end
       end
