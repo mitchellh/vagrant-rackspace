@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :rackspace do |rs|
     rs.username = "YOUR USERNAME"
     rs.api_key  = "YOUR API KEY"
-    rs.flavor   = /512MB/
+    rs.flavor   = /1 GB/
     rs.image    = /Ubuntu/
   end
 end
