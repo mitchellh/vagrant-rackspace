@@ -107,6 +107,24 @@ module VagrantPlugins
         end
       end
 
+      def self.action_suspend
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use Call, IsCreated do |env, b2|
+            created = env[:result]
+            
+            if !created
+              b2.use MessageNotCreated
+              next
+            end
+
+            b.use CreateImage
+            # b.use Destroy
+          end
+        end
+      end
+
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
@@ -118,6 +136,7 @@ module VagrantPlugins
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
       autoload :ReadState, action_root.join("read_state")
       autoload :SyncFolders, action_root.join("sync_folders")
+      autoload :CreateImage, action_root.join("create_image")
     end
   end
 end
