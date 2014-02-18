@@ -118,8 +118,9 @@ module VagrantPlugins
               next
             end
 
-            b.use CreateImage
-            # b.use Destroy
+            b2.use ConnectRackspace
+            b2.use CreateImage
+            b2.use DeleteServer
           end
         end
       end

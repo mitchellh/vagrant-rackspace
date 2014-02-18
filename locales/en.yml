@@ -2,12 +2,16 @@ en:
   vagrant_rackspace:
     already_created: |-
       The server is already created.
+    creating_image: |-
+      Creating image...
     deleting_server: |-
       Deleting server...
     finding_flavor: |-
       Finding flavor for server...
     finding_image: |-
       Finding image for server...
+    image_ready: |-
+      Image created
     launching_server: |-
       Launching a server with the following settings...
     not_created: |-
