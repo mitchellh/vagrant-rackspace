@@ -8,9 +8,9 @@ module VagrantPlugins
 
         def call(env)
           compute_service = env[:rackspace_compute]
-          env[:ui].info "Flavors"
-          compute_service.flavors.sort_by(&:name).each do |flavor|
-            env[:ui].info "#{flavor.id.to_s} : #{flavor.name} - #{flavor.vcpus.to_s} - #{flavor.ram.to_s} - #{flavor.disk.to_s} GB"
+          env[:ui].info ('%-36s %s' % ['Flavor ID', 'Flavor Name'])
+          compute_service.flavors.sort_by(&:id).each do |flavor|
+            env[:ui].info ('%-36s %s' % [flavor.id, flavor.name])
           end
           @app.call(env)
         end

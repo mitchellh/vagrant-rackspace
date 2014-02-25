@@ -8,9 +8,9 @@ module VagrantPlugins
 
         def call(env)
           compute_service = env[:rackspace_compute]
-          env[:ui].info "Images"
+          env[:ui].info ('%-36s %s' % ['Image ID', 'Image Name'])
           compute_service.images.sort_by(&:name).each do |image|
-            env[:ui].info "#{image.name} : #{image.id.to_s}"
+            env[:ui].info ('%-36s %s' % [image.id.to_s, image.name])
           end
           @app.call(env)
         end
