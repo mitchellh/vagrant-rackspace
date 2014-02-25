@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+REGIONS = [:dfw, :ord, :syd]
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  Vagrant.require_plugin "vagrant-rackspace"
+
+  REGIONS.each do |region|
+    config.vm.define region do |machine|
+      machine.vm.provider :rackspace do |rs|
+        rs.username = ENV['RAX_USERNAME']
+        rs.api_key  = ENV['RAX_API_KEY']
+      end
+    end
+  end
+end
