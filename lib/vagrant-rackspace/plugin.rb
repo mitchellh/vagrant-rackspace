@@ -32,6 +32,11 @@ module VagrantPlugins
         require_relative "provider"
         Provider
       end
+
+      command "freezedry" do
+        require_relative "freezedry"
+        Command::FreezeDry
+      end
     end
   end
 end

@@ -107,7 +107,7 @@ module VagrantPlugins
         end
       end
 
-      def self.action_suspend
+      def self.action_freezedry
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
