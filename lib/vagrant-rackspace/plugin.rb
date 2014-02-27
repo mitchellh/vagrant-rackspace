@@ -32,6 +32,11 @@ module VagrantPlugins
         require_relative "provider"
         Provider
       end
+
+      command('rackspace') do
+        require_relative "command/root"
+        Command::Root
+      end
     end
   end
 end
