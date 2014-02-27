@@ -79,6 +79,23 @@ Note that normally a lot of this boilerplate is encoded within the box
 file, but the box file used for the quick start, the "dummy" box, has
 no preconfigured defaults.
 
+## Custom Commands
+
+The plugin includes two custom vagrant commands.  One gives you a list of available
+images you can use and the other gives a list of available flavors.
+
+```
+vagrant rackspace images
+vagrant rackspace flavors
+```
+
+If your Vagrantfile contains multiple machines, then you can pass the machine name
+to the command to get the possible images/flavors for that machine only:
+```
+vagrant rackspace images <name>
+vagrant rackspace flavors <name>
+```
+
 ## Box Format
 
 Every provider in Vagrant must introduce a custom box format. This
