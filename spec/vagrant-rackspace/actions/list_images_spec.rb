@@ -6,7 +6,12 @@ describe VagrantPlugins::Rackspace::Action::ListImages do
   let(:ui) { Vagrant::UI::Silent.new }
   let(:images) {
     Fog.mock!
-    Fog::Compute.new({ :provider => :rackspace, :rackspace_region => :dfw }).images
+    Fog::Compute.new({
+      :provider => :rackspace,
+      :rackspace_region => :dfw,
+      :rackspace_api_key => 'anything',
+      :rackspace_username => 'anything',
+    }).images
   }
   let(:compute_connection) { double('fog connection') }
   let(:env) do

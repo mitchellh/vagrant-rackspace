@@ -6,7 +6,12 @@ describe VagrantPlugins::Rackspace::Action::ListFlavors do
   let(:ui) { Vagrant::UI::Silent.new }
   let(:flavors) {
     Fog.mock!
-    Fog::Compute.new({ :provider => :rackspace, :rackspace_region => :dfw }).flavors
+    Fog::Compute.new({
+      :provider => :rackspace,
+      :rackspace_region => :dfw,
+      :rackspace_api_key => 'anything',
+      :rackspace_username => 'anything',
+    }).flavors
   }
   let(:compute_connection) { double('fog connection') }
   let(:env) do
