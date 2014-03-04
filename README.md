@@ -36,7 +36,7 @@ The default configuration of the RHEL family of Linux distributions requires a t
 > sudo: sorry, you must have a tty to run sudo
 
 The best way to take deal with this error is to upgrade to Vagrant 1.4 or later, and enable:
-```
+```ruby
 config.ssh.pty = true
 ```
 
@@ -55,7 +55,7 @@ $ vagrant box add dummy https://github.com/mitchellh/vagrant-rackspace/raw/maste
 And then make a Vagrantfile that looks like the following, filling in
 your information where necessary.
 
-```
+```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
@@ -78,6 +78,27 @@ within your Vagrantfile, SSH and provisioning will work as well.
 Note that normally a lot of this boilerplate is encoded within the box
 file, but the box file used for the quick start, the "dummy" box, has
 no preconfigured defaults.
+
+## Custom Commands
+
+The plugin includes several Rackspace-specific vagrant commands.  You can get the
+list of available commands with `vagrant rackspace -h`.
+
+If you want to know what images or flavors are available for a machine, you can use:
+
+```
+$ vagrant rackspace images
+$ vagrant rackspace flavors
+```
+
+In a multi-machine Vagrantfile you can also query for a single machine:
+```
+$ vagrant rackspace images <name>
+$ vagrant rackspace flavors <name>
+```
+
+These command will connect to Rackspace using the settings associated with the machine,
+and query the region to get the list of available images or flavors.
 
 ## Box Format
 
