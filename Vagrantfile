@@ -17,6 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
     rs.image    = /Ubuntu/
+    rs.rackspace_region = :iad
 
     # rs.rsync_include 'PATTERN'  # per man page for rsync
   end

@@ -4,8 +4,6 @@ module VagrantPlugins
   module Rackspace
     module Command
       class Root < Vagrant.plugin("2", :command)
-        SUBCOMMANDS = %w{images flavors}
-
         def self.synopsis
           "query Rackspace for available images or flavors"
         end

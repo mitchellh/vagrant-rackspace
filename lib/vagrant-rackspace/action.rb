@@ -107,7 +107,7 @@ module VagrantPlugins
         end
       end
 
-      def self.action_freezedry
+      def self.action_create_image
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
@@ -120,13 +120,12 @@ module VagrantPlugins
 
             b2.use ConnectRackspace
             b2.use CreateImage
-            b2.use DeleteServer
           end
         end
       end
 
       # Extended actions
-      def self.action_rackspace_images
+      def self.action_list_images
         Vagrant::Action::Builder.new.tap do |b|
           # b.use ConfigValidate # is this per machine?
           b.use ConnectRackspace
@@ -134,7 +133,7 @@ module VagrantPlugins
         end
       end
 
-      def self.action_rackspace_flavors
+      def self.action_list_flavors
         Vagrant::Action::Builder.new.tap do |b|
           # b.use ConfigValidate # is this per machine?
           b.use ConnectRackspace
