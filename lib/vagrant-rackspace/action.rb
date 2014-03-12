@@ -125,6 +125,22 @@ module VagrantPlugins
         end
       end
 
+      # Extended actions
+      def self.action_rackspace_images
+        Vagrant::Action::Builder.new.tap do |b|
+          # b.use ConfigValidate # is this per machine?
+          b.use ConnectRackspace
+          b.use ListImages
+        end
+      end
+
+      def self.action_rackspace_flavors
+        Vagrant::Action::Builder.new.tap do |b|
+          # b.use ConfigValidate # is this per machine?
+          b.use ConnectRackspace
+          b.use ListFlavors
+        end
+      end
 
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
@@ -138,6 +154,8 @@ module VagrantPlugins
       autoload :ReadState, action_root.join("read_state")
       autoload :SyncFolders, action_root.join("sync_folders")
       autoload :CreateImage, action_root.join("create_image")
+      autoload :ListImages, action_root.join("list_images")
+      autoload :ListFlavors, action_root.join("list_flavors")
     end
   end
 end

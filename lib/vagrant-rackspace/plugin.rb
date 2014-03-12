@@ -33,9 +33,9 @@ module VagrantPlugins
         Provider
       end
 
-      command "freezedry" do
-        require_relative "freezedry"
-        Command::FreezeDry
+      command('rackspace') do
+        require_relative "command/root"
+        Command::Root
       end
     end
   end
