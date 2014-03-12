@@ -107,8 +107,25 @@ module VagrantPlugins
         end
       end
 
+      def self.action_create_image
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use Call, IsCreated do |env, b2|
+            created = env[:result]
+            
+            if !created
+              b2.use MessageNotCreated
+              next
+            end
+
+            b2.use ConnectRackspace
+            b2.use CreateImage
+          end
+        end
+      end
+
       # Extended actions
-      def self.action_rackspace_images
+      def self.action_list_images
         Vagrant::Action::Builder.new.tap do |b|
           # b.use ConfigValidate # is this per machine?
           b.use ConnectRackspace
@@ -116,7 +133,7 @@ module VagrantPlugins
         end
       end
 
-      def self.action_rackspace_flavors
+      def self.action_list_flavors
         Vagrant::Action::Builder.new.tap do |b|
           # b.use ConfigValidate # is this per machine?
           b.use ConnectRackspace
@@ -135,6 +152,7 @@ module VagrantPlugins
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
       autoload :ReadState, action_root.join("read_state")
       autoload :SyncFolders, action_root.join("sync_folders")
+      autoload :CreateImage, action_root.join("create_image")
       autoload :ListImages, action_root.join("list_images")
       autoload :ListFlavors, action_root.join("list_flavors")
     end

@@ -1,18 +1,18 @@
 module VagrantPlugins
   module Rackspace
     module Command
-      class Flavors < Vagrant.plugin("2", :command)
+      class ListImages < Vagrant.plugin("2", :command)
         def execute
           options = {}
           opts = OptionParser.new do |o|
-            o.banner = "Usage: vagrant rackspace flavors [options]"
+            o.banner = "Usage: vagrant rackspace images list [options]"
           end
 
           argv = parse_options(opts)
           return if !argv
 
           with_target_vms(argv, :provider => :rackspace) do |machine|
-            machine.action('list_flavors')
+            machine.action('list_images')
           end
         end
       end
