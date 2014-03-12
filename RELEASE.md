@@ -8,6 +8,7 @@ currently done.
 * Update the version in "lib/vagrant-rackspace/version.rb"
 * Update the version in CHANGELOG.md
 * Use "rake release". This will make sure to tag that commit and push it RubyGems.
+* Create new [github release](https://github.com/mitchellh/vagrant-rackspace/releases)
 * Update the version again in both files to a dev version for working again.
 
 The CHANGELOG.md should be maintained in a similar format to Vagrant:
