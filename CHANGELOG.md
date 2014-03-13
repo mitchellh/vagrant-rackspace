@@ -1,3 +1,16 @@
+# 0.1.7 (March 13, 2014)
+
+FEATURES:
+
+ - Adds commands to list available images and flavors [GH-73]
+ - Adds support for creating images from running VMs [GH-74]
+
+IMPROVEMENTS:
+
+ - Adds support for rsync --include directives [GH-56]
+ - Adds ability to add server metadata [GH-72]
+ - Cleans up chef node and client from chef server [GH-67]
+
 # 0.1.6 (January 8, 2014)
 
 BUG FIXES:
