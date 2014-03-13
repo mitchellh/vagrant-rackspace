@@ -57,7 +57,7 @@ Scenario: Create a single server (rackspace_compute_url)
         rs.server_name = 'vagrant-single-server'
         rs.username = ENV['RAX_USERNAME']
         rs.api_key  = ENV['RAX_API_KEY']
-        rs.rackspace_compute_url = "https://#{ENV['RAX_REGION'].downcase}.servers.api.rackspacecloud.com/v2"
+        rs.rackspace_compute_url = "https://#{ENV['RAX_REGION'].downcase}.servers.api.rackspacecloud.com/v2/#{ENV['RAX_TENANT_ID']}"
         rs.flavor   = /1 GB Performance/
         rs.image    = /Ubuntu/
         rs.public_key_path = "~/.ssh/id_rsa.pub" unless Fog.mock?
