@@ -5,20 +5,26 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    Vagrant.require_plugin "vagrant-rackspace"
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "dummy"
+  config.vm.communicator = :winrm
   config.vm.provider :rackspace do |rs|
     rs.username = ENV['RAX_USERNAME']
     rs.api_key  = ENV['RAX_API_KEY']
-    rs.flavor   = /1 GB Performance/
-    rs.image    = /Ubuntu/
+    rs.flavor   = /2 GB Performance/
+    rs.image    = 'Windows Server 2012'
     rs.rackspace_region = :iad
-
+    rs.personality = 
+      [
+        {
+          :path     => 'C:\\cloud-automation\\bootstrap.cmd',
+          :contents => Base64.encode64(File.read('bootstrap.cmd'))
+        }
+      ]
     # rs.rsync_include 'PATTERN'  # per man page for rsync
   end
   # The url from where the 'config.vm.box' box will be fetched if it

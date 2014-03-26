@@ -60,6 +60,8 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :key_name
 
+      attr_accessor :personality
+
       # A Hash of metadata that will be sent to the instance for configuration
       #
       # @return [Hash]
