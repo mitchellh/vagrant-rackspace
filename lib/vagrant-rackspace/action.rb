@@ -36,7 +36,6 @@ module VagrantPlugins
             end
 
             b2.use Provision
-            b2.use SyncFolders
           end
         end
       end
@@ -102,7 +101,6 @@ module VagrantPlugins
 
             b2.use ConnectRackspace
             b2.use Provision
-            b2.use SyncFolders
             b2.use CreateServer
           end
         end
@@ -152,7 +150,6 @@ module VagrantPlugins
       autoload :MessageNotCreated, action_root.join("message_not_created")
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
       autoload :ReadState, action_root.join("read_state")
-      autoload :SyncFolders, action_root.join("sync_folders")
       autoload :CreateImage, action_root.join("create_image")
       autoload :ListImages, action_root.join("list_images")
       autoload :ListFlavors, action_root.join("list_flavors")

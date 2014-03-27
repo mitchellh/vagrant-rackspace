@@ -12,20 +12,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "dummy"
   config.vm.communicator = :winrm
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
   config.vm.provider :rackspace do |rs|
     rs.username = ENV['RAX_USERNAME']
     rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /2 GB Performance/
     rs.image    = 'Windows Server 2012'
     rs.rackspace_region = :iad
-    rs.personality = 
-      [
-        {
-          :path     => 'C:\\cloud-automation\\bootstrap.cmd',
-          :contents => Base64.encode64(File.read('bootstrap.cmd'))
-        }
-      ]
-    # rs.rsync_include 'PATTERN'  # per man page for rsync
+    rs.personality = [
+      {
+        :path     => 'C:\\cloud-automation\\bootstrap.cmd',
+        :contents => Base64.encode64(File.read('bootstrap.cmd'))
+      }
+    ]
   end
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.

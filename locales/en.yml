@@ -18,8 +18,6 @@ en:
       The server hasn't been created yet. Run `vagrant up` first.
     ready: |-
       The server is ready!
-    rsync_folder: |-
-      Rsyncing folder: %{hostpath} => %{guestpath}
     waiting_for_build: |-
       Waiting for the server to be built...
     waiting_for_rackconnect: |-
@@ -62,13 +60,6 @@ en:
       no_matching_image: |-
         No matching image was found! Please check your image setting to
         make sure you have a valid image chosen.
-      rsync_error: |-
-        There was an error when attemping to rsync a share folder.
-        Please inspect the error message below for more info.
-
-        Host path: %{hostpath}
-        Guest path: %{guestpath}
-        Error: %{stderr}
 
     states:
       short_active: |-
