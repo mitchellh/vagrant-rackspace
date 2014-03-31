@@ -59,6 +59,10 @@ module VagrantPlugins
             :metadata    => config.metadata
           }
 
+          if config.admin_pass
+            options[:password] = config.admin_pass
+          end
+
           if config.key_name
             options[:keypair] = config.key_name
             env[:ui].info(" -- Key Name: #{config.key_name}")
@@ -76,7 +80,6 @@ module VagrantPlugins
           options[:disk_config] = config.disk_config if config.disk_config
           options[:networks] = config.networks if config.networks
 
-          # Create the server
           server = env[:rackspace_compute].servers.create(options)
 
           # Store the ID right away so we can track it
