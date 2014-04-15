@@ -12,7 +12,7 @@ describe VagrantPlugins::Rackspace::Config do
     end
 
     its(:api_key)  { should be_nil }
-    its(:rackspace_region) { should be_nil }
+    its(:rackspace_region) { :dfw }
     its(:rackspace_compute_url) { should be_nil }
     its(:rackspace_auth_url) { should be_nil }
     its(:flavor)   { should eq(/512MB/) }
