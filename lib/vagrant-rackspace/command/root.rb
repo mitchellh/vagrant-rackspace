@@ -20,6 +20,10 @@ module VagrantPlugins
             require File.expand_path("../flavors", __FILE__)
             Flavors
           end
+          @subcommands.register(:networks) do
+            require File.expand_path("../networks", __FILE__)
+            Networks
+          end
 
           super(argv, env)
         end

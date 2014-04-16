@@ -142,6 +142,13 @@ module VagrantPlugins
         end
       end
 
+      def self.action_list_networks
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListNetworks
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
@@ -156,6 +163,7 @@ module VagrantPlugins
       autoload :CreateImage, action_root.join("create_image")
       autoload :ListImages, action_root.join("list_images")
       autoload :ListFlavors, action_root.join("list_flavors")
+      autoload :ListNetworks, action_root.join("list_networks")
     end
   end
 end
