@@ -54,7 +54,7 @@ module VagrantPlugins
             # .hg/ to exclude list as that isn't covered in
             # --cvs-exclude
             command = [
-              "rsync", "--verbose", "--archive", "-z",
+              "rsync", "--verbose", "--archive", "-z", "-L",
               "--cvs-exclude", 
               "--exclude", ".hg/",
               *includes,
