@@ -1,10 +1,44 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'base64'
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.provision :shell, :inline => 'Write-Output "Powershell is working!"'
+  # Install Chocolatey and git
+  config.vm.provision :shell, :inline => "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))"
+  config.vm.provision :shell, :inline => 'cinst git'
+
+  # Install Ruby and Bundler
+  # Had issues with Ruby 2 x64 on Windows; check back when Chocolatey has DevKit updates?
+  config.vm.provision :shell, :inline => 'cinst ruby -Version 1.9.3.48400'
+  config.vm.provision :shell, :inline => 'cinst ruby.devkit'
+  #config.vm.provision :shell, :inline => '"---`r`n- C:\Ruby193" | Out-File C:\DevKit\config.yml'
+  #config.vm.provision :shell, :inline => 'cd C:\DevKit; ruby dk.rb install'
+  config.vm.provision :shell, :inline => 'gem install bundler'
+
+  # Clone or pull Fog (you can put this in an external file)
+  config.vm.provision :shell, :inline => <<-eos
+  if(!(Test-Path -Path "fog"))
+  {
+   git clone https://github.com/fog/fog
+  }
+  else
+  {
+   cd fog; git pull origin master
+  }
+eos
+
+  # Setup and run tests!
+  # Some dependencies, like coveralls, aren't installing on Windows (or require DevKit)
+  config.vm.provision :shell, :inline => 'cd fog; bundle install'
+  # mock[rackspace] doesn't work because it tries to do export
+  # config.vm.provision :shell, :inline => 'cd fog; bundle exec rake mock[rackspace]'
+  config.vm.provision :shell, :inline => 'cd fog; bundle exec rake'
+
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
