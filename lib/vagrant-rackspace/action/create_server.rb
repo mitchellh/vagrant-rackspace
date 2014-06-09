@@ -64,7 +64,7 @@ module VagrantPlugins
           end
 
           if config.key_name
-            options[:keypair] = config.key_name
+            options[:key_name] = config.key_name
             env[:ui].info(" -- Key Name: #{config.key_name}")
           elsif config.personality
             options[:personality] = config.personality
