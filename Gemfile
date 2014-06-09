@@ -13,7 +13,5 @@ group :development do
   # Vagrant environment itself using `vagrant plugin`.
   gem 'coveralls', require: false
   gem 'pry'
-  # Forked: Fog needs to accept admin password on creation
-  gem 'fog', :git => 'git@github.com:maxlinc/fog.git', :branch => 'rackspace_admin_pass'
 end
 
