@@ -1,8 +1,8 @@
-# Vagrant RackSpace Cloud Provider
+# Vagrant Rackspace Cloud Provider
 
 This is a [Vagrant](http://www.vagrantup.com) 1.1+ plugin that adds a
-[RackSpace Cloud](http://www.rackspace.com/cloud) provider to Vagrant,
-allowing Vagrant to control and provision machines within RackSpace
+[Rackspace Cloud](http://www.rackspace.com/cloud) provider to Vagrant,
+allowing Vagrant to control and provision machines within Rackspace
 cloud.
 
 **Note:** This plugin requires Vagrant 1.1+.
@@ -35,7 +35,7 @@ box file for Vagrant.
 The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo.  Vagrant does not connect with a tty by default, so you may experience the error:
 > sudo: sorry, you must have a tty to run sudo
 
-The best way to take deal with this error is to upgrade to Vagrant 1.4 or later, and enable:
+The best way to deal with this error is to upgrade to Vagrant 1.4 or later, and enable:
 ```ruby
 config.ssh.pty = true
 ```
