@@ -27,6 +27,9 @@ module VagrantPlugins
           # Find the image
           env[:ui].info(I18n.t("vagrant_rackspace.finding_image"))
           image = find_matching(env[:rackspace_compute].images.all, config.image)
+          if not image
+            image = env[:rackspace_compute].images.get config.image
+          end
           raise Errors::NoMatchingImage if !image
 
           # Figure out the name for the server
