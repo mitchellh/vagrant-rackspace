@@ -60,6 +60,16 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :key_name
 
+      # The path to the file containing user data for cloud init
+      #
+      # @ return [String]
+      attr_accessor :user_data
+
+      # Whether to attach a read-only configuration drive
+      #
+      # @ return [Boolean]
+      attr_accessor :config_drive
+
       # A Hash of metadata that will be sent to the instance for configuration
       #
       # @return [Hash]
@@ -116,6 +126,8 @@ module VagrantPlugins
         @public_key_path = UNSET_VALUE
         @rackconnect = UNSET_VALUE
         @server_name = UNSET_VALUE
+        @user_data = UNSET_VALUE
+        @config_drive = UNSET_VALUE
         @username = UNSET_VALUE
         @disk_config = UNSET_VALUE
         @networks = []
@@ -131,6 +143,8 @@ module VagrantPlugins
         @image    = /Ubuntu/ if @image == UNSET_VALUE
         @rackconnect = nil if @rackconnect == UNSET_VALUE
         @server_name = nil if @server_name == UNSET_VALUE
+        @user_data = nil if @user_data == UNSET_VALUE
+        @config_drive = nil if @config_drive == UNSET_VALUE
         @metadata = nil if @metadata == UNSET_VALUE
         @username = nil if @username == UNSET_VALUE
         @disk_config = nil if @disk_config == UNSET_VALUE
