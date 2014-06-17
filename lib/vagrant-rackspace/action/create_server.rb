@@ -16,8 +16,10 @@ module VagrantPlugins
         end
 
         def call(env)
-          # Get the configs
-          config   = env[:machine].provider_config
+          # Get the Rackspace configs
+          config           = env[:machine].provider_config
+          machine_config   = env[:machine].config
+          communicator = machine_config.vm.communicator ||= :ssh
 
           # Find the flavor
           env[:ui].info(I18n.t("vagrant_rackspace.finding_flavor"))
@@ -32,14 +34,19 @@ module VagrantPlugins
           # Figure out the name for the server
           server_name = config.server_name || env[:machine].name
 
-          # If we are using a key name, can ignore the public key path
-          if not config.key_name
-            # If we're using the default keypair, then show a warning
-            default_key_path = Vagrant.source_root.join("keys/vagrant.pub").to_s
-            public_key_path  = File.expand_path(config.public_key_path, env[:root_path])
+          if communicator == :winrm
+            env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_winrm")) if !winrm_secure?(machine_config)
+            env[:ui].warn(I18n.t("vagrant_rackspace.warn_winrm_password")) if config.admin_pass != machine_config.winrm.password
+          else # communicator == :ssh
+            # If we are using a key name, can ignore the public key path
+            if not config.key_name
+              # If we're using the default keypair, then show a warning
+              default_key_path = Vagrant.source_root.join("keys/vagrant.pub").to_s
+              public_key_path  = File.expand_path(config.public_key_path, env[:root_path])
 
-            if default_key_path == public_key_path
-              env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_ssh"))
+              if default_key_path == public_key_path
+                env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_ssh"))
+              end
             end
           end
 
@@ -59,9 +66,15 @@ module VagrantPlugins
             :metadata    => config.metadata
           }
 
+          if config.admin_pass
+            options[:password] = config.admin_pass
+          end
+
           if config.key_name
             options[:key_name] = config.key_name
             env[:ui].info(" -- Key Name: #{config.key_name}")
+          elsif config.personality
+            options[:personality] = config.personality
           else
             options[:personality] = [
               {
@@ -74,7 +87,6 @@ module VagrantPlugins
           options[:disk_config] = config.disk_config if config.disk_config
           options[:networks] = config.networks if config.networks
 
-          # Create the server
           server = env[:rackspace_compute].servers.create(options)
 
           # Store the ID right away so we can track it
@@ -119,8 +131,10 @@ module VagrantPlugins
               end
             end
 
-            # Wait for SSH to become available
-            env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_ssh"))
+            # Wait for a communicator
+            env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_communicator",
+              :communicator => communicator, :address => server.public_ip_address))
+
             while true
               # If we're interrupted then just back out
               break if env[:interrupted]
@@ -146,6 +160,13 @@ module VagrantPlugins
           else
             collection.get name
           end
+        end
+
+        # This method checks to see if WinRM over SSL is supported and used
+        def winrm_secure?(machine_config)
+          machine_config.winrm.ssl == true
+        rescue NoMethodError
+          false
         end
       end
     end

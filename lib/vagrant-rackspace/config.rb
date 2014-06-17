@@ -60,6 +60,9 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :key_name
 
+      attr_accessor :admin_pass
+      attr_accessor :personality
+
       # A Hash of metadata that will be sent to the instance for configuration
       #
       # @return [Hash]
@@ -97,11 +100,6 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :networks
 
-      # Opt files/directories in to the rsync operation performed by this provider
-      #
-      # @return [Array]
-      attr_accessor :rsync_includes
-
       # Default Rackspace Cloud Network IDs
       SERVICE_NET_ID = '11111111-1111-1111-1111-111111111111'
       PUBLIC_NET_ID = '00000000-0000-0000-0000-000000000000'
@@ -119,7 +117,6 @@ module VagrantPlugins
         @username = UNSET_VALUE
         @disk_config = UNSET_VALUE
         @networks = []
-        @rsync_includes = []
       end
 
       def finalize!
@@ -135,7 +132,6 @@ module VagrantPlugins
         @username = nil if @username == UNSET_VALUE
         @disk_config = nil if @disk_config == UNSET_VALUE
         @networks = nil if @networks.empty?
-        @rsync_includes = nil if @rsync_includes.empty?
 
         if @public_key_path == UNSET_VALUE
           @public_key_path = Vagrant.source_root.join("keys/vagrant.pub")
@@ -170,10 +166,6 @@ module VagrantPlugins
         else
           @networks.delete net_id
         end
-      end
-
-      def rsync_include(inc)
-        @rsync_includes << inc
       end
 
       def validate(machine)

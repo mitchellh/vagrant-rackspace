@@ -23,7 +23,7 @@ describe VagrantPlugins::Rackspace::Config do
     its(:username) { should be_nil }
     its(:disk_config) { should be_nil }
     its(:networks) { should be_nil }
-    its(:rsync_includes) { should be_nil }
+    its(:admin_pass)  { should be_nil }
   end
 
   describe "overriding defaults" do
@@ -37,7 +37,8 @@ describe VagrantPlugins::Rackspace::Config do
       :rackconnect,
       :server_name,
       :disk_config,
-      :username].each do |attribute|
+      :username,
+      :admin_pass].each do |attribute|
       it "should not default #{attribute} if overridden" do
         subject.send("#{attribute}=".to_sym, "foo")
         subject.finalize!
@@ -54,12 +55,6 @@ describe VagrantPlugins::Rackspace::Config do
       subject.send(:networks).should include(VagrantPlugins::Rackspace::Config::SERVICE_NET_ID)
     end
 
-    it "should not default rsync_includes if overridden" do 
-      inc = "core"
-      subject.send(:rsync_include, inc)
-      subject.finalize!
-      subject.send(:rsync_includes).should include(inc)
-    end
   end
 
   describe "validation" do

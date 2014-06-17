@@ -18,10 +18,6 @@ module VagrantPlugins
       class NoMatchingImage < VagrantRackspaceError
         error_key(:no_matching_image)
       end
-
-      class RsyncError < VagrantRackspaceError
-        error_key(:rsync_error)
-      end
     end
   end
 end
