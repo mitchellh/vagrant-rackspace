@@ -21,12 +21,12 @@ module VagrantPlugins
 
           # Find the flavor
           env[:ui].info(I18n.t("vagrant_rackspace.finding_flavor"))
-          flavor = find_matching(env[:rackspace_compute].flavors.all, config.flavor)
+          flavor = find_matching(env[:rackspace_compute].flavors, config.flavor)
           raise Errors::NoMatchingFlavor if !flavor
 
           # Find the image
           env[:ui].info(I18n.t("vagrant_rackspace.finding_image"))
-          image = find_matching(env[:rackspace_compute].images.all, config.image)
+          image = find_matching(env[:rackspace_compute].images, config.image)
           raise Errors::NoMatchingImage if !image
 
           # Figure out the name for the server
@@ -141,13 +141,11 @@ module VagrantPlugins
         # `name`. Or, if `name` is a regexp, a partial match is chosen
         # as well.
         def find_matching(collection, name)
-          collection.each do |single|
-            return single if single.id == name
-            return single if single.name == name
-            return single if name.is_a?(Regexp) && name =~ single.name
+          if name.is_a?(Regexp)
+            collection.all.find {|item| name =~ item.name }
+          else
+            collection.get name
           end
-
-          nil
         end
       end
     end
