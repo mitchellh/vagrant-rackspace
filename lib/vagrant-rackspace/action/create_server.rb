@@ -59,6 +59,10 @@ module VagrantPlugins
             :metadata    => config.metadata
           }
 
+          if config.admin_pass
+            options[:password] = config.admin_pass
+          end
+
           if config.user_data
             options[:user_data] = File.read(config.user_data)
           end
