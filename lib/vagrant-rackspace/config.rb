@@ -102,6 +102,13 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :rsync_includes
 
+      # Password to set for root (on Linux) or Administrator (on Windows)
+      # A random password will be generated if admin_pass is not set or
+      # does not meet the password requirements of the operating system.
+      #
+      # @return [String]
+      attr_accessor :admin_pass
+
       # Default Rackspace Cloud Network IDs
       SERVICE_NET_ID = '11111111-1111-1111-1111-111111111111'
       PUBLIC_NET_ID = '00000000-0000-0000-0000-000000000000'

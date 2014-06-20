@@ -59,6 +59,18 @@ module VagrantPlugins
             :metadata    => config.metadata
           }
 
+          if config.admin_pass
+            options[:password] = config.admin_pass
+          end
+
+          if config.user_data
+            options[:user_data] = File.read(config.user_data)
+          end
+
+          if config.config_drive
+            options[:config_drive] = config.config_drive
+          end
+
           if config.key_name
             options[:key_name] = config.key_name
             env[:ui].info(" -- Key Name: #{config.key_name}")
