@@ -36,6 +36,9 @@ en:
       Warning! The Rackspace provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
       will be silently ignored.
+    sync_folders: |-
+        Rackspace support for Vagrant 1.3 has been deprecated. Please
+        upgrade to the latest version of vagrant for continued support. 
 
     config:
       api_key_required: |-
