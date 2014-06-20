@@ -24,7 +24,7 @@ describe VagrantPlugins::Rackspace::Config do
     its(:disk_config) { should be_nil }
     its(:networks) { should be_nil }
     its(:rsync_includes) { should be_nil }
-    its(:admin_pass)  { should be_nil }
+    its(:admin_password)  { should be_nil }
   end
 
   describe "overriding defaults" do
@@ -39,7 +39,7 @@ describe VagrantPlugins::Rackspace::Config do
       :server_name,
       :disk_config,
       :username,
-      :admin_pass].each do |attribute|
+      :admin_password].each do |attribute|
       it "should not default #{attribute} if overridden" do
         subject.send("#{attribute}=".to_sym, "foo")
         subject.finalize!
