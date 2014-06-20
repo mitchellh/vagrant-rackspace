@@ -2,7 +2,8 @@
 
 FEATURES:
 
- 
+ - Use new synced folder support found in Vagrant 1.4+ if available [GH-104]
+ - Ability to set admin password [GH-105] [GH-107]
 
 IMPROVEMENTS:
 
