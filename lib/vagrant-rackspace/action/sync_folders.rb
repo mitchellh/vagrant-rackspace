@@ -16,6 +16,7 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
+          env[:ui].warn(I18n.t("vagrant_rackspace.sync_folders"))
 
           ssh_info = env[:machine].ssh_info
 
