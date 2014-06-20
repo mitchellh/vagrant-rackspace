@@ -1,3 +1,19 @@
+# 0.1.8 (June 20, 2014)
+
+FEATURES:
+
+ 
+
+IMPROVEMENTS:
+
+ - Copy symlinks when syncing folders using older versions of vagrant [GH-89]
+ - Update vagrant to allow users to specify non-standard images and flavors [GH-101]
+
+BUG FIXES:
+
+  - Fixed windows path issue when syncing folders older versions of vagrant [GH-96]
+
+
 # 0.1.7 (March 13, 2014)
 
 FEATURES:
