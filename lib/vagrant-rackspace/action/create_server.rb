@@ -153,12 +153,21 @@ module VagrantPlugins
         # `name`. Or, if `name` is a regexp, a partial match is chosen
         # as well.
         def find_matching(collection, name)
-          if name.is_a?(Regexp)
-            collection.all.find {|item| name =~ item.name }
-          else
-            collection.get name
+          item = collection.find do |single|
+            single.id == name ||
+            single.name == name ||
+            (name.is_a?(Regexp) && name =~ single.name)
           end
+
+          # If it is not present in collection, it might be a non-standard image/flavor
+          if item.nil? && !name.is_a?(Regexp)
+            item = collection.get name
+          end
+
+          item
         end
+
+
       end
     end
   end
