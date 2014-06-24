@@ -1,3 +1,13 @@
+# 0.1.9 (June 24, 2014)
+
+FEATURES:
+
+ - Support for userdata and drive config [GH-100]
+
+ BUG FIXES:
+
+ - Fixed the ability to specify strings and integers for flavors and images in VagrantFile
+ 
 # 0.1.8 (June 20, 2014)
 
 FEATURES:
