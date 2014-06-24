@@ -148,6 +148,13 @@ module VagrantPlugins
 
         protected
 
+        def escape_name_if_necessary(name)
+          # The next release of fog should url escape these values.
+          return name if Gem::Version.new(Fog::VERSION) > Gem::Version.new("1.22.1")
+
+          Fog::Rackspace.escape(name)
+        end
+
         # This method finds a matching _thing_ in a collection of
         # _things_. This works matching if the ID or NAME equals to
         # `name`. Or, if `name` is a regexp, a partial match is chosen
@@ -161,7 +168,7 @@ module VagrantPlugins
 
           # If it is not present in collection, it might be a non-standard image/flavor
           if item.nil? && !name.is_a?(Regexp)
-            item = collection.get name
+            item = collection.get escape_name_if_necessary(name)
           end
 
           item
