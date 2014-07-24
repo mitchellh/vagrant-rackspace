@@ -28,6 +28,10 @@ module VagrantPlugins
             require File.expand_path("../networks", __FILE__)
             Networks
           end
+          @subcommands.register(:servers) do
+            require File.expand_path("../servers", __FILE__)
+            Servers
+          end
 
           super(argv, env)
         end
