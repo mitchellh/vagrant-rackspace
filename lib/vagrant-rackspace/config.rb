@@ -107,7 +107,7 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :networks
 
-<<<<<<< HEAD
+
       # Opt files/directories in to the rsync operation performed by this provider
       #
       # @return [Array]
@@ -119,7 +119,7 @@ module VagrantPlugins
       #
       # @return [String]
       attr_accessor :admin_password
-=======
+
       # Whether to apply a workaround to disable the requiretty sudoer option.
       #
       # @return [Boolean]
