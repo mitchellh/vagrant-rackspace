@@ -12,15 +12,22 @@ module VagrantPlugins
       def self.action_destroy
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
-          b.use Call, IsCreated do |env, b2|
+          b.use Call, IsCreated do |env, b1|
             if !env[:result]
-              b2.use MessageNotCreated
+              b1.use MessageNotCreated
               next
             end
 
-            b2.use ConnectRackspace
-            b2.use DeleteServer
-            b2.use ProvisionerCleanup if defined?(ProvisionerCleanup)
+            b1.use Call, DestroyConfirm do |env1, b2|
+              if env1[:resul]
+                b2.use ConnectRackspace
+                b2.use DeleteServer
+                b2.use ProvisionerCleanup if defined?(ProvisionerCleanup)
+              else
+                b2.use MessageWillNotDestroy
+                next
+              end
+            end
           end
         end
       end
