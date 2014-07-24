@@ -18,8 +18,11 @@ module VagrantPlugins
           ssh_info = env[:machine].ssh_info
 
           env[:ui].info(I18n.t("vagrant_rackspace.requiretty_workaround"))
-          fog_ssh = Fog::SSH.new(ssh_info[:host], ssh_info[:username], {:keys => [ssh_info[:private_key_path]]})
-          fog_scp = Fog::SCP.new(ssh_info[:host], ssh_info[:username], {:keys => [ssh_info[:private_key_path]]})
+
+          key_options = {}
+          key_options[:key_data] = IO.read(ssh_info[:private_key_path].first)
+          fog_ssh = Fog::SSH.new(ssh_info[:host], ssh_info[:username], key_options)
+          fog_scp = Fog::SCP.new(ssh_info[:host], ssh_info[:username], key_options)
 
           workaround_script = VagrantPlugins::Rackspace.source_root.join("resources/require_tty_workaround.sh")
 
