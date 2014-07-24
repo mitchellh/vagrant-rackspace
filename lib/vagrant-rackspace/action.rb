@@ -128,7 +128,7 @@ module VagrantPlugins
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
             created = env[:result]
-            
+
             if !created
               b2.use MessageNotCreated
               next
@@ -164,6 +164,13 @@ module VagrantPlugins
         end
       end
 
+      def self.action_list_networks
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListNetworks
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
@@ -179,6 +186,7 @@ module VagrantPlugins
       autoload :ListImages, action_root.join("list_images")
       autoload :ListFlavors, action_root.join("list_flavors")
       autoload :ListKeyPairs, action_root.join("list_keypairs")
+      autoload :ListNetworks, action_root.join("list_networks")
     end
   end
 end
