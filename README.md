@@ -96,21 +96,20 @@ If you are using RackConnect with vagrant, you will need to add the following li
 The plugin includes several Rackspace-specific vagrant commands.  You can get the
 list of available commands with `vagrant rackspace -h`.
 
-If you want to know what images or flavors are available for a machine, you can use:
+For example to list all available images for a machine you can use:
 
 ```
 $ vagrant rackspace images
-$ vagrant rackspace flavors
 ```
 
 In a multi-machine Vagrantfile you can also query for a single machine:
+
 ```
 $ vagrant rackspace images <name>
-$ vagrant rackspace flavors <name>
 ```
 
-These command will connect to Rackspace using the settings associated with the machine,
-and query the region to get the list of available images or flavors.
+These commands will connect to Rackspace using the settings associated with the machine,
+and query the region to get the list of available flavors, images, keypairs, networks and servers.
 
 ## Box Format
 
