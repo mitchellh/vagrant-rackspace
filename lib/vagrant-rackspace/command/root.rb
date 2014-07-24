@@ -20,6 +20,10 @@ module VagrantPlugins
             require File.expand_path("../flavors", __FILE__)
             Flavors
           end
+          @subcommands.register(:keypairs) do
+            require File.expand_path("../keypairs", __FILE__)
+            KeyPairs
+          end
 
           super(argv, env)
         end
