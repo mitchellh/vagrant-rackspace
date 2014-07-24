@@ -51,7 +51,6 @@ module VagrantPlugins
             else
               b2.use SyncFolders
             end
-            b2.use SyncFolders
 
           end
         end
@@ -125,7 +124,6 @@ module VagrantPlugins
             else
               b2.use SyncFolders
             end
-            b2.use WarnNetworks
             b2.use CreateServer
           end
         end
@@ -189,7 +187,6 @@ module VagrantPlugins
       autoload :ListKeyPairs, action_root.join("list_keypairs")
       autoload :ListNetworks, action_root.join("list_networks")
       autoload :ListServers, action_root.join("list_servers")
-      autoload :WarnNetworks, action_root.join("warn_networks")
       autoload :TTYWorkaround, action_root.join("tty_workaround")
     end
   end
