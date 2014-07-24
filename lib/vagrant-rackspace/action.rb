@@ -19,12 +19,12 @@ module VagrantPlugins
             end
 
             b1.use Call, DestroyConfirm do |env1, b2|
-              if env1[:resul]
+              if env1[:result]
                 b2.use ConnectRackspace
                 b2.use DeleteServer
                 b2.use ProvisionerCleanup if defined?(ProvisionerCleanup)
               else
-                b2.use MessageWillNotDestroy
+                b2.use Message, I18n.t("vagrant_rackspace.will_not_destroy")
                 next
               end
             end
