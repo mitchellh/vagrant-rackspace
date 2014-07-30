@@ -107,6 +107,7 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :networks
 
+
       # Opt files/directories in to the rsync operation performed by this provider
       #
       # @return [Array]
@@ -118,6 +119,11 @@ module VagrantPlugins
       #
       # @return [String]
       attr_accessor :admin_password
+
+      # Whether to apply a workaround to disable the requiretty sudoer option.
+      #
+      # @return [Boolean]
+      attr_accessor :use_tty_workaround
 
       # Default Rackspace Cloud Network IDs
       SERVICE_NET_ID = '11111111-1111-1111-1111-111111111111'
@@ -139,6 +145,7 @@ module VagrantPlugins
         @disk_config = UNSET_VALUE
         @networks = []
         @rsync_includes = []
+        @use_tty_workaround = UNSET_VALUE
       end
 
       def finalize!
@@ -157,6 +164,7 @@ module VagrantPlugins
         @disk_config = nil if @disk_config == UNSET_VALUE
         @networks = nil if @networks.empty?
         @rsync_includes = nil if @rsync_includes.empty?
+        @use_tty_workaround = nil if @requiretty == UNSET_VALUE
 
         if @public_key_path == UNSET_VALUE
           @public_key_path = Vagrant.source_root.join("keys/vagrant.pub")

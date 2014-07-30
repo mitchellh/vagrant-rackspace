@@ -40,7 +40,11 @@ en:
       The server will not be deleted.
     sync_folders: |-
         Rackspace support for Vagrant 1.3 has been deprecated. Please
-        upgrade to the latest version of vagrant for continued support. 
+        upgrade to the latest version of vagrant for continued support.
+    requiretty_workaround_start: |-
+      Applying requiretty workaround...
+    requiretty_workaround_end: |-
+      requiretty workaround complete!
 
     config:
       api_key_required: |-
