@@ -1,6 +1,6 @@
-require "log4r"
+require 'log4r'
 require 'rbconfig'
-require "vagrant/util/subprocess"
+require 'vagrant/util/subprocess'
 
 module VagrantPlugins
   module Rackspace
