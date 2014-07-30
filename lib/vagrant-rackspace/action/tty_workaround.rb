@@ -15,7 +15,7 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
-          env[:machine].communicate.sudo "sed -i'.bk' -e 's/^\(Defaults\s\+requiretty\)/# \1/' /etc/sudoers"
+          env[:machine].communicate.sudo 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
         end
       end
     end
