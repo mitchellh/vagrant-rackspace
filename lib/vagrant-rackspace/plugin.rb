@@ -18,6 +18,11 @@ module VagrantPlugins
       This plugin enables Vagrant to manage machines in RackSpace Cloud.
       DESC
 
+      action_hook(:tty_workaround, Plugin::ALL_ACTIONS) do |hook|
+        require_relative 'action/tty_workaround'
+        hook.after(Vagrant::Action::Builtin::SyncedFolders, Action::TTYWorkaround)
+      end
+
       config(:rackspace, :provider) do
         require_relative "config"
         Config
