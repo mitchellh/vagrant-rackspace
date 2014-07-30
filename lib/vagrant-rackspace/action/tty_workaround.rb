@@ -15,23 +15,7 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
-          ssh_info = env[:machine].ssh_info
-
-          env[:ui].info(I18n.t("vagrant_rackspace.requiretty_workaround"))
-
-          key_options = {}
-          key_options[:key_data] = IO.read(ssh_info[:private_key_path].first)
-          fog_ssh = Fog::SSH.new(ssh_info[:host], ssh_info[:username], key_options)
-          fog_scp = Fog::SCP.new(ssh_info[:host], ssh_info[:username], key_options)
-
-          workaround_script = VagrantPlugins::Rackspace.source_root.join("resources/require_tty_workaround.sh")
-
-          fog_scp.upload(workaround_script.to_s, '/tmp/require_tty_workaround.sh')
-          results = fog_ssh.run("sudo bash /tmp/require_tty_workaround.sh")
-          stdout = results.map(&:stdout).join("\n")
-          stderr = results.map(&:stderr).join("\n")
-          env[:ui].info(stdout) unless stdout.empty?
-          env[:ui].error(stderr) unless stderr.empty?
+          env[:machine].communicate.sudo "sed -i'.bk' -e 's/^\(Defaults\s\+requiretty\)/# \1/' /etc/sudoers"
         end
       end
     end
