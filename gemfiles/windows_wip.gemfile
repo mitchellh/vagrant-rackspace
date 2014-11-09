@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 group :development do
-  gem "vagrant", :git => "git://github.com/mitchellh/vagrant.git", :branch => "v1.4.0"
+  gem "vagrant", :git => "git://github.com/maxlinc/vagrant.git", :branch => "winrmssl"
   gem "coveralls", :require => false
   gem "pry"
   gem "appraisal", "~> 1.0"
