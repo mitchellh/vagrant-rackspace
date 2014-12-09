@@ -35,10 +35,55 @@ box file for Vagrant.
 The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo.  Vagrant does not connect with a tty by default, so you may experience the error:
 > sudo: sorry, you must have a tty to run sudo
 
-The best way to deal with this error is to upgrade to Vagrant 1.4 or later, and enable:
+If you are using Vagrant 1.4 or later you can tell it to use a pty for SSH connections. However,
+RSync doesn't work very well with a pty, so you would still have trouble. The best approach is to
+use an `init_script` setting to modify the sudoers file and disable the require_tty requirement.
+
+The following settings show an example of how you can workaround the issue:
 ```ruby
-config.ssh.pty = true
+Vagrant.configure("2") do |config|
+  config.vm.box = "dummy"
+  config.ssh.pty = true
+
+  config.vm.provider :rackspace do |rs|
+    rs.username = "YOUR USERNAME"
+    rs.api_key  = "YOUR API KEY"
+    rs.flavor   = /1 GB Performance/
+    rs.image    = /^CentOS/
+    rs.init_script = 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
+  end
+end
 ```
+
+### Windows (enabling WinRM)
+
+Vagrant 1.6 and later support WinRM as an alternative to SSH for communicating with Windows machines. However, WinRM is not enabled by default on the Rackspace images for Windows. You can use the `init_script
+to enable and secure WinRM so Vagrant will be able to connect. This example enables WinRM for both HTTP and HTTPS traffic.
+
+Security warnings:
+- Vagrant's WinRM support is not as secure as SSH. You should only use it for testing purposes where these warnings are acceptible. If you require a more secure setup you'll need to either configure SSH on Windows, or to wait until for future Vagrant releases with better WinRM security.
+  - The current Vagrant release (v1.6.5) only supports WinRM as plaintext over HTTP, but [SSL support is in progress](https://github.com/mitchellh/vagrant/pull/4236) and should hopefully be included in the next release.
+  - The default setup, even with SSL support, uses self-signed certificates. If you want to use a real Certificate Authority you'll need to customize your Windows images or `init_script`.
+
+If you're okay with those warnings, you can create a Windows server using these settings:
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vm.box = "dummy"
+  config.ssh.pty = true
+
+  config.vm.provider :rackspace do |rs|
+    rs.username = "YOUR USERNAME"
+    rs.api_key  = "YOUR API KEY"
+    rs.flavor   = /1 GB Performance/
+    rs.image    = 'Windows Server 2012'
+    rs.init_script = File.read 'bootstrap.cmd'
+  end
+end
+```
+
+You can get a sample [bootstrap.cmd](bootstrap.cmd) file from this repo.
+
 
 ## Quick Start
 
@@ -133,9 +178,9 @@ This provider exposes quite a few provider-specific configuration options:
 * `image` - The server image to boot. This can be a string matching the
   exact ID or name of the image, or this can be a regular expression to
   partially match some image.
-* `rackspace_region` - The region to hit. By default this is :dfw. Valid options are: 
+* `rackspace_region` - The region to hit. By default this is :dfw. Valid options are:
 :dfw, :ord, :lon, :iad, :syd.  Users should preference using this setting over `rackspace_compute_url` setting.
-* `rackspace_compute_url` - The compute_url to hit. This is good for custom endpoints. 
+* `rackspace_compute_url` - The compute_url to hit. This is good for custom endpoints.
 * `rackspace_auth_url` - The endpoint to authentication against. By default, vagrant will use the global
 rackspace authentication endpoint for all regions with the exception of :lon. IF :lon region is specified
 vagrant will authenticate against the UK authentication endpoint.
