@@ -82,16 +82,18 @@ module VagrantPlugins
             options[:config_drive] = config.config_drive
           end
 
-          if config.key_name
-            options[:key_name] = config.key_name
-            env[:ui].info(" -- Key Name: #{config.key_name}")
-          else
-            options[:personality] = [
-              {
-                :path     => "/root/.ssh/authorized_keys",
-                :contents => encode64(File.read(public_key_path))
-              }
-            ]
+          if communicator == :ssh
+            if config.key_name
+              options[:key_name] = config.key_name
+              env[:ui].info(" -- Key Name: #{config.key_name}")
+            else
+              options[:personality] = [
+                {
+                  :path     => "/root/.ssh/authorized_keys",
+                  :contents => encode64(File.read(public_key_path))
+                }
+              ]
+            end
           end
 
           if config.init_script && communicator == :winrm
