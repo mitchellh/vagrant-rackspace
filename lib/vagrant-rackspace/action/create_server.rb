@@ -84,7 +84,17 @@ module VagrantPlugins
             options[:personality] = [
               {
                 :path     => "/root/.ssh/authorized_keys",
-                :contents => Base64.encode64(File.read(public_key_path))
+                :contents => encode64(File.read(public_key_path))
+              }
+            ]
+          end
+
+          if config.init_script && communicator == :winrm
+            # Might want to check init_script against known limits
+            options[:personality] = [
+              {
+                :path     => 'C:\\cloud-automation\\bootstrap.cmd',
+                :contents => encode64(config.init_script, :crlf_newline => true)
               }
             ]
           end
@@ -149,6 +159,7 @@ module VagrantPlugins
             env[:ui].info(I18n.t("vagrant_rackspace.ready"))
           end
 
+          env[:machine].communicate.sudo config.init_script if config.init_script && communicator == :ssh
           @app.call(env)
         end
 
@@ -180,6 +191,11 @@ module VagrantPlugins
           item
         end
 
+        def encode64(content, options = nil)
+          content = content.encode options if options
+          encoded = Base64.encode64 content
+          encoded.strip
+        end
 
       end
     end
