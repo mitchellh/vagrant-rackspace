@@ -3,12 +3,13 @@
 source "https://rubygems.org"
 
 group :development do
-  gem "vagrant", :git => "git://github.com/mitchellh/vagrant.git", :branch => "v1.4.2"
   gem "coveralls", :require => false
   gem "pry"
-  gem "appraisal", "~> 1.0"
+  gem "appraisal", "~> 1.0", :git => "https://github.com/maxlinc/appraisal", :branch => "gemspec_in_group"
 end
 
 group :plugins do
-  gemspec path: ".."
+  gem "vagrant", :git => "git://github.com/mitchellh/vagrant.git", :branch => "v1.4.2"
+  
+  gemspec :path => "../"
 end
