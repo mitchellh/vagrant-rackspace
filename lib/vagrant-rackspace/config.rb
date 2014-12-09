@@ -121,8 +121,8 @@ module VagrantPlugins
 
       # A initialization script to run on the target machine before
       # Vagrant connects. It should generally be used only for enabling
-      # and shell connection transport protocols, like SSH or WinRM. Use
-      # normal Vagrant provisioners for other purposes.
+      # or securing shell connection transport protocols, like SSH or WinRM.
+      # Use normal Vagrant provisioners for other purposes.
       #
       # This script may be subject to the limits for Server Personality.
       #
