@@ -24,14 +24,23 @@ en:
       Waiting for the server to be built...
     waiting_for_rackconnect: |-
       Waiting for RackConnect to complete...
-    waiting_for_ssh: |-
-      Waiting for SSH to become available...
+    waiting_for_communicator: |-
+      Waiting for %{communicator} to become available at %{address}...
     warn_insecure_ssh: |-
       Warning! By not specifying a custom public/private keypair,
       Vagrant is defaulting to use the insecure keypair that ships with
       Vagrant. While this isn't much of a big deal for local development,
       this is quite insecure for remote servers. Please specify a custom
       public/private keypair.
+    warn_insecure_winrm: |-
+      Warning! Vagrant is using plaintext communication for WinRM. While
+      this isn't much of a big deal for local development, this is quite
+      insecure for remote servers. Please configure WinRM to use SSL.
+    warn_winrm_password: |-
+      Warning! Vagrant has no way to store the Administrator password generated
+      by Rackspace for later use with WinRM. Please configure Vagrant to use
+      the same value for the winrm password and the Rackspace admin_password so
+      Vagrant will be able to connect via WinRM.
     warn_networks: |-
       Warning! The Rackspace provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
@@ -40,7 +49,7 @@ en:
       The server will not be deleted.
     sync_folders: |-
         Rackspace support for Vagrant 1.3 has been deprecated. Please
-        upgrade to the latest version of vagrant for continued support. 
+        upgrade to the latest version of vagrant for continued support.
 
     config:
       api_key_required: |-
