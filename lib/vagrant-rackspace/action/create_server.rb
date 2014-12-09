@@ -16,8 +16,14 @@ module VagrantPlugins
         end
 
         def call(env)
-          # Get the configs
-          config   = env[:machine].provider_config
+          # Get the Rackspace configs
+          config           = env[:machine].provider_config
+          machine_config   = env[:machine].config
+          begin
+            communicator = machine_config.vm.communicator ||= :ssh
+          rescue NoMethodError
+            communicator = :ssh
+          end
 
           # Find the flavor
           env[:ui].info(I18n.t("vagrant_rackspace.finding_flavor"))
