@@ -11,3 +11,4 @@ group :plugins do
   gem "vagrant", git: "https://github.com/mitchellh/vagrant.git", :branch => 'master'
   gemspec
 end
+
