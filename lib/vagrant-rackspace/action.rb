@@ -158,6 +158,20 @@ module VagrantPlugins
         end
       end
 
+      def self.action_list_networks
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListNetworks
+        end
+      end
+
+      def self.action_list_servers
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListServers
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
