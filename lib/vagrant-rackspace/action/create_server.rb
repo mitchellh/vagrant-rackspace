@@ -122,8 +122,7 @@ module VagrantPlugins
             next if env[:interrupted]
 
             # Set the progress
-            env[:ui].clear_line
-            env[:ui].report_progress(server.progress, 100, false)
+            report_server_progress(env[:machine], server.progress, 100, false)
 
             # Wait for the server to be ready
             begin
@@ -213,6 +212,19 @@ module VagrantPlugins
           false
         end
 
+        # Ported from Vagrant::UI, but scoped to the machine's UI
+        def report_server_progress(machine, progress, total, show_parts)
+          machine.ui.clear_line
+          if total && total > 0
+            percent = (progress.to_f / total.to_f) * 100
+            line    = "Progress: #{percent.to_i}%"
+            line   << " (#{progress} / #{total})" if show_parts
+          else
+            line    = "Progress: #{progress}"
+          end
+
+          machine.ui.info(line, new_line: false)
+        end
       end
     end
   end
