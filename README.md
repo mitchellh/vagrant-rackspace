@@ -1,43 +1,82 @@
 # Vagrant Rackspace Cloud Provider
 
-This is a [Vagrant](http://www.vagrantup.com) 1.1+ plugin that adds a
+This is a [Vagrant](http://www.vagrantup.com) 1.5+ plugin that adds a
 [Rackspace Cloud](http://www.rackspace.com/cloud) provider to Vagrant,
 allowing Vagrant to control and provision machines within Rackspace
 cloud.
 
-**Note:** This plugin requires Vagrant 1.1+.
+**Note:** This plugin requires Vagrant 1.5+. Windows support requires Vagrant 1.6+.
 
 ## Features
 
 * Boot Rackspace Cloud instances.
 * SSH into the instances.
 * Provision the instances with any built-in Vagrant provisioner.
-* Minimal synced folder support via `rsync`.
+* Sync folders with any built-in Vagrant synchronized folder plugin (e.g. `rsync`)
+* Create Rackspace images from a running Vagrant box
 
-## Usage
+## Installation
 
-Install using standard Vagrant 1.1+ plugin installation methods. After
-installing, `vagrant up` and specify the `rackspace` provider. An example is
-shown below.
+Install using standard Vagrant plugin installation methods.
 
 ```
 $ vagrant plugin install vagrant-rackspace
-...
-$ vagrant up --provider=rackspace
-...
 ```
 
-Of course prior to doing this, you'll need to obtain an Rackspace-compatible
-box file for Vagrant.
+## Usage
 
-### CentOS / RHEL (sudo: sorry, you must have a tty to run sudo)
+One the plugin is installed, you use it with `vagrant up` by specifing
+the `rackspace` provider:
+```
+$ vagrant up --provider=rackspace
+```
 
-The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo.  Vagrant does not connect with a tty by default, so you may experience the error:
+You'll need a Vagrantfile in order to test it out. You can generate a sample
+Vagrantfile with `vagrant init`. Here's an example with Rackspace configuration:
+
+```ruby
+Vagrant.configure("2") do |config|
+  # The box is optional in newer versions of Vagrant
+  # config.vm.box = "dummy"
+
+  config.vm.provider :rackspace do |rs|
+    rs.username = "YOUR USERNAME"
+    rs.api_key  = "YOUR API KEY"
+    rs.flavor   = /1 GB Performance/
+    rs.image    = /Ubuntu/
+    rs.metadata = {"key" => "value"}       # optional
+  end
+end
+```
+
+You may be required to use a box, depending on your version of Vagrant. If necessary you can
+add the "dummy" box with the command:
+```
+$ vagrant box add dummy https://github.com/mitchellh/vagrant-rackspace/raw/master/dummy.box
+```
+
+Then uncomment the line containing `config.vm.box = "dummy"`.
+
+### RackConnect
+
+If you are using RackConnect with vagrant, you will need to add the following line to the `config.vm.provider` section to prevent timeouts.
+
+  ```
+  rs.rackconnect = true
+  ```
+
+### CentOS / RHEL / Fedora
+
+The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo.Vagrant does not connect with a tty by default, so you may experience the error:
 > sudo: sorry, you must have a tty to run sudo
 
-If you are using Vagrant 1.4 or later you can tell it to use a pty for SSH connections. However,
-RSync doesn't work very well with a pty, so you would still have trouble. The best approach is to
-use an `init_script` setting to modify the sudoers file and disable the require_tty requirement.
+You can tell Vagrant it should use a pseudo-terminal (pty) to get around this issue with the option:
+```ruby
+  config.ssh.pty = true
+```
+
+However, Vagrant does not always work well with the pty. In particular, rsync may not work. So we recommend
+using this configuration for a workaround which will reconfigure the server so a tty is not required to run sudo:
 
 The following settings show an example of how you can workaround the issue:
 ```ruby
@@ -57,20 +96,18 @@ end
 
 ### Windows (enabling WinRM)
 
-Vagrant 1.6 and later support WinRM as an alternative to SSH for communicating with Windows machines. However, WinRM is not enabled by default on the Rackspace images for Windows. You can use the `init_script
-to enable and secure WinRM so Vagrant will be able to connect. This example enables WinRM for both HTTP and HTTPS traffic.
+Vagrant 1.6 and later support WinRM as an alternative to SSH for communicating with Windows machines, though secure WinRM connections at this time. They are expected to be added in a 1.7.x release of Vagrant.
 
-Security warnings:
+Be aware of the security limitations:
 - Vagrant's WinRM support is not as secure as SSH. You should only use it for testing purposes where these warnings are acceptible. If you require a more secure setup you'll need to either configure SSH on Windows, or to wait until for future Vagrant releases with better WinRM security.
-  - The current Vagrant release (v1.6.5) only supports WinRM as plaintext over HTTP, but [SSL support is in progress](https://github.com/mitchellh/vagrant/pull/4236) and should hopefully be included in the next release.
-  - The default setup, even with SSL support, uses self-signed certificates. If you want to use a real Certificate Authority you'll need to customize your Windows images or `init_script`.
+  - The current Vagrant release (v1.7.0) only supports WinRM as plaintext over HTTP, but [SSL support is in progress](https://github.com/mitchellh/vagrant/pull/4236) and should hopefully be released in the near future.
+  - The default setup, even with SSL support, uses self-signed certificates. If you want to use a real Certificate Authority you'll need to customize your Windows images or `init_script
 
-If you're okay with those warnings, you can create a Windows server using these settings:
+If you still choose to use Vagrant and WinRM for development and testing, then you'll need a Windows image with WinRM enabled. WinRM is not enabled by default for the Rackspace images, but you can use the `init_script` configuration option to enable and secure it so Vagrant will be able to connect. This example enables WinRM for both HTTP and HTTPS traffic:
 
 ```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
-  config.ssh.pty = true
 
   config.vm.provider :rackspace do |rs|
     rs.username = "YOUR USERNAME"
@@ -84,57 +121,107 @@ end
 
 You can get a sample [bootstrap.cmd](bootstrap.cmd) file from this repo.
 
+### Parallel, multi-machine setup
 
-## Quick Start
-
-After installing the plugin (instructions above), the quickest way to get
-started is to actually use a dummy Rackspace box and specify all the details
-manually within a `config.vm.provider` block. So first, add the dummy
-box using any name you want:
-
-```
-$ vagrant box add dummy https://github.com/mitchellh/vagrant-rackspace/raw/master/dummy.box
-...
-```
-
-And then make a Vagrantfile that looks like the following, filling in
-your information where necessary.
+You can define multiple machines in a single Vagrant file, for example:
 
 ```ruby
-Vagrant.configure("2") do |config|
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "dummy"
 
-  config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
-    rs.flavor   = /1 GB Performance/
-    rs.image    = /Ubuntu/
-    rs.metadata = {"key" => "value"}       # optional
+  config.vm.define :ubuntu do |ubuntu|
+    ubuntu.ssh.private_key_path = '~/.ssh/id_rsa'
+    ubuntu.vm.provider :rackspace do |rs|
+      rs.username = ENV['RAX_USERNAME']
+      rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
+      rs.api_key  = ENV['RAX_API_KEY']
+      rs.flavor   = /1 GB Performance/
+      rs.image    = /Ubuntu/
+      rs.rackspace_region = :iad
+      rs.public_key_path = '~/.ssh/id_rsa.pub'
+    end
+  end
+
+  config.vm.define :centos do |centos|
+    centos.ssh.private_key_path = '~/.ssh/id_rsa'
+    centos.ssh.pty = true
+    centos.vm.provider :rackspace do |rs|
+      rs.username = ENV['RAX_USERNAME']
+      rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
+      rs.api_key  = ENV['RAX_API_KEY']
+      rs.flavor   = /1 GB Performance/
+      rs.image    = /^CentOS/ # Don't match OnMetal - CentOS
+      rs.rackspace_region = :iad
+      rs.public_key_path = '~/.ssh/id_rsa.pub'
+      rs.init_script = 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
+    end
+  end
+
+  config.vm.define :windows do |windows|
+    windows.vm.provision :shell, :inline => 'Write-Output "WinRM is working!"'
+    windows.vm.communicator = :winrm
+    windows.winrm.username = 'Administrator'
+    windows.winrm.password = ENV['VAGRANT_ADMIN_PASSWORD']
+    begin
+      windows.winrm.transport = :ssl
+      windows.winrm.ssl_peer_verification = false
+    rescue
+      puts "Warning: Vagrant #{Vagrant::VERSION} does not support WinRM over SSL."
+    end
+    windows.vm.synced_folder ".", "/vagrant", disabled: true
+    windows.vm.provider :rackspace do |rs|
+      rs.username = ENV['RAX_USERNAME']
+      rs.api_key  = ENV['RAX_API_KEY']
+      rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
+      rs.flavor   = /2 GB Performance/
+      rs.image    = 'Windows Server 2012'
+      rs.rackspace_region = ENV['RAX_REGION'] ||= 'dfw'
+      rs.init_script = File.read 'bootstrap.cmd'
+    end
   end
 end
 ```
 
-And then run `vagrant up --provider=rackspace`.
+You than can then launch them all with `vagrant up --provider rackspace`, or a specific server
+with `vagrant up --provider rackspace <name>`.
 
-This will start an Ubuntu 12.04 instance in the DFW datacenter region within
-your account. And assuming your SSH information was filled in properly
-within your Vagrantfile, SSH and provisioning will work as well.
+Vagrant will create all machines simultaneously when you have multi-machine setup. If you want to
+create them one at a time or have any trouble, you can use the `--no-parallel` option.
 
-Note that normally a lot of this boilerplate is encoded within the box
-file, but the box file used for the quick start, the "dummy" box, has
-no preconfigured defaults.
+## Custom Commands
+
+The plugin includes several Rackspace-specific vagrant commands.  You can get the
+list of available commands with `vagrant rackspace -h`.
+
+Note that some commands run per-machine if you have a multi-machine setup. This can look repre
 
 ### Flavors / Images
 
- To determine what flavors and images are avliable in your region refer to the [Custom Commands](#custom-commands) section.
+You can list all available images with the command:
 
-### RackConnect
+```
+$ vagrant rackspace images
+```
 
-If you are using RackConnect with vagrant, you will need to add the following line to the `config.vm.provider` section to prevent timeouts.
+```
+$ vagrant rackspace flavors
+```
 
-  ```
-  rs.rackconnect = true
-  ```
+If you have a multi-machine setup than this will show the images/flavors for each machine. This seems
+a bit repetitive, but since machines can be configured for different regions or even accounts they may
+have a different set of available images or flavors. You can also get the list for a specific machine by specifying it's name as an argument:
+
+```
+$ vagrant rackspace images <name>
+$ vagrant rackspace flavors <name>
+```
+
+
 
 ## Custom Commands
 
@@ -155,17 +242,6 @@ $ vagrant rackspace images <name>
 
 These commands will connect to Rackspace using the settings associated with the machine,
 and query the region to get the list of available flavors, images, keypairs, networks and servers.
-
-## Box Format
-
-Every provider in Vagrant must introduce a custom box format. This
-provider introduces `rackspace` boxes. You can view an example box in
-the [example_box/ directory](https://github.com/mitchellh/vagrant-rackspace/tree/master/example_box).
-That directory also contains instructions on how to build a box.
-
-The box format is basically just the required `metadata.json` file
-along with a `Vagrantfile` that does default settings for the
-provider-specific configuration for this provider.
 
 ## Configuration
 
@@ -210,7 +286,9 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-## Networks
+You can find a more complete list the documentation for the [Config class](http://www.rubydoc.info/gems/vagrant-rackspace/VagrantPlugins/Rackspace/Config).
+
+### Networks
 
 Networking features in the form of `config.vm.network` are not
 supported with `vagrant-rackspace`, currently. If any of these are
@@ -229,15 +307,13 @@ config.vm.provider :rackspace do |rs|
 end
 ```
 
-## Synced Folders
+### Synced Folders
 
-There is minimal support for synced folders. Upon `vagrant up`,
-`vagrant reload`, and `vagrant provision`, the Rackspace provider will use
-`rsync` (if available) to uni-directionally sync the folder to
-the remote machine over SSH.
+You can use this provider with the Vagrant [synced folders](https://docs.vagrantup.com/v2/synced-folders/basic_usage.html). The default type should be `rsync` for most images, with the possible exception of Windows.
 
-This is good enough for all built-in Vagrant provisioners (shell,
-chef, and puppet) to work!
+### Plugins
+
+Vagrant has great support for plugins and many of them should work alongside `vagrant-rackspace`. See the list of [Available Vagrant Plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins).
 
 ## Development
 
