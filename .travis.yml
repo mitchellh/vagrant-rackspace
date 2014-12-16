@@ -9,4 +9,4 @@ gemfile:
   - gemfiles/latest_stable.gemfile
   - gemfiles/oldest_current.gemfile
   - gemfiles/previous_release.gemfile
-
+  - gemfiles/windows_wip.gemfile

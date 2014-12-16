@@ -38,14 +38,19 @@ module VagrantPlugins
           # Figure out the name for the server
           server_name = config.server_name || env[:machine].name
 
-          # If we are using a key name, can ignore the public key path
-          if not config.key_name
-            # If we're using the default keypair, then show a warning
-            default_key_path = Vagrant.source_root.join("keys/vagrant.pub").to_s
-            public_key_path  = File.expand_path(config.public_key_path, env[:root_path])
+          if communicator == :winrm
+            env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_winrm")) if !winrm_secure?(machine_config)
+            env[:ui].warn(I18n.t("vagrant_rackspace.warn_winrm_password")) if config.admin_password != machine_config.winrm.password
+          else # communicator == :ssh
+            # If we are using a key name, can ignore the public key path
+            if not config.key_name
+              # If we're using the default keypair, then show a warning
+              default_key_path = Vagrant.source_root.join("keys/vagrant.pub").to_s
+              public_key_path  = File.expand_path(config.public_key_path, env[:root_path])
 
-            if default_key_path == public_key_path
-              env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_ssh"))
+              if default_key_path == public_key_path
+                env[:ui].warn(I18n.t("vagrant_rackspace.warn_insecure_ssh"))
+              end
             end
           end
 
@@ -77,16 +82,18 @@ module VagrantPlugins
             options[:config_drive] = config.config_drive
           end
 
-          if config.key_name
-            options[:key_name] = config.key_name
-            env[:ui].info(" -- Key Name: #{config.key_name}")
-          else
-            options[:personality] = [
-              {
-                :path     => "/root/.ssh/authorized_keys",
-                :contents => encode64(File.read(public_key_path))
-              }
-            ]
+          if communicator == :ssh
+            if config.key_name
+              options[:key_name] = config.key_name
+              env[:ui].info(" -- Key Name: #{config.key_name}")
+            else
+              options[:personality] = [
+                {
+                  :path     => "/root/.ssh/authorized_keys",
+                  :contents => encode64(File.read(public_key_path))
+                }
+              ]
+            end
           end
 
           if config.init_script && communicator == :winrm
@@ -147,8 +154,10 @@ module VagrantPlugins
               end
             end
 
-            # Wait for SSH to become available
-            env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_ssh"))
+            # Wait for a communicator
+            env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_communicator",
+              :communicator => communicator, :address => server.public_ip_address))
+
             while true
               # If we're interrupted then just back out
               break if env[:interrupted]
@@ -195,6 +204,13 @@ module VagrantPlugins
           content = content.encode options if options
           encoded = Base64.encode64 content
           encoded.strip
+        end
+
+        # This method checks to see if WinRM over SSL is supported and used
+        def winrm_secure?(machine_config)
+          machine_config.winrm.transport == :ssl
+        rescue NoMethodError
+          false
         end
 
       end
