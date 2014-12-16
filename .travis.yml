@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.0
 script: "appraisal rake"
@@ -9,4 +8,5 @@ gemfile:
   - gemfiles/latest_stable.gemfile
   - gemfiles/oldest_current.gemfile
   - gemfiles/previous_release.gemfile
+  - gemfiles/oldest_supported.gemfile
   - gemfiles/windows_wip.gemfile
