@@ -6,7 +6,7 @@ module VagrantPlugins
       class RunInitScript
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_rackspace::action::read_state")
+          @logger = Log4r::Logger.new("vagrant_rackspace::action::run_init_script")
         end
 
         def call(env)
