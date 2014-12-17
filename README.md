@@ -67,7 +67,7 @@ If you are using RackConnect with vagrant, you will need to add the following li
 
 ### CentOS / RHEL / Fedora
 
-The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo.Vagrant does not connect with a tty by default, so you may experience the error:
+The default configuration of the RHEL family of Linux distributions requires a tty in order to run sudo. Vagrant does not connect with a tty by default, so you may experience the error:
 > sudo: sorry, you must have a tty to run sudo
 
 You can tell Vagrant it should use a pseudo-terminal (pty) to get around this issue with the option:
@@ -195,10 +195,8 @@ create them one at a time or have any trouble, you can use the `--no-parallel` o
 
 ## Custom Commands
 
-The plugin includes several Rackspace-specific vagrant commands.  You can get the
+The plugin includes several Rackspace-specific vagrant commands. You can get the
 list of available commands with `vagrant rackspace -h`.
-
-Note that some commands run per-machine if you have a multi-machine setup. This can look repre
 
 ### Flavors / Images
 
@@ -221,11 +219,9 @@ $ vagrant rackspace images <name>
 $ vagrant rackspace flavors <name>
 ```
 
-
-
 ## Custom Commands
 
-The plugin includes several Rackspace-specific vagrant commands.  You can get the
+The plugin includes several Rackspace-specific vagrant commands. You can get the
 list of available commands with `vagrant rackspace -h`.
 
 For example to list all available images for a machine you can use:
@@ -255,7 +251,7 @@ This provider exposes quite a few provider-specific configuration options:
   exact ID or name of the image, or this can be a regular expression to
   partially match some image.
 * `rackspace_region` - The region to hit. By default this is :dfw. Valid options are:
-:dfw, :ord, :lon, :iad, :syd.  Users should preference using this setting over `rackspace_compute_url` setting.
+:dfw, :ord, :lon, :iad, :syd. Users should preference using this setting over `rackspace_compute_url` setting.
 * `rackspace_compute_url` - The compute_url to hit. This is good for custom endpoints.
 * `rackspace_auth_url` - The endpoint to authentication against. By default, vagrant will use the global
 rackspace authentication endpoint for all regions with the exception of :lon. IF :lon region is specified
@@ -263,7 +259,7 @@ vagrant will authenticate against the UK authentication endpoint.
 * `public_key_path` - The path to a public key to initialize with the remote
   server. This should be the matching pair for the private key configured
   with `config.ssh.private_key_path` on Vagrant.
-* `key_name` - If a public key has been [uploaded to the account already](http://docs.rackspace.com/servers/api/v2/cs-devguide/content/ServersKeyPairs-d1e2545.html), the uploaded key can be used to initialize the remote server by providing its name.  The uploaded public key should be the matching pair for the private key configured
+* `key_name` - If a public key has been [uploaded to the account already](http://docs.rackspace.com/servers/api/v2/cs-devguide/content/ServersKeyPairs-d1e2545.html), the uploaded key can be used to initialize the remote server by providing its name. The uploaded public key should be the matching pair for the private key configured
   with `config.ssh.private_key_path` on Vagrant.
 * `server_name` - The name of the server within RackSpace Cloud. This
   defaults to the name of the Vagrant machine (via `config.vm.define`), but
