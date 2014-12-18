@@ -6,11 +6,11 @@ matrix:
       rvm: 2.1.1 # Just to make sure we're ready...
     - gemfile: Gemfile
       rvm: 2.0.0
-    - gemfile: gemfiles/vagrant-1.7.gemfile
+    - gemfile: gemfiles/vagrant_1.7.gemfile
       rvm: 2.0.0
-    - gemfile: gemfiles/vagrant-1.6.gemfile
+    - gemfile: gemfiles/vagrant_1.6.gemfile
       rvm: 2.0.0
-    - gemfile: gemfiles/vagrant-1.5.gemfile
+    - gemfile: gemfiles/vagrant_1.5.gemfile
       rvm: 2.0.0
-    - gemfile: gemfiles/vagrant-1.5.0.gemfile
+    - gemfile: gemfiles/vagrant_1.5.0.gemfile
       rvm: 2.0.0
