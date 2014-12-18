@@ -1,16 +1,30 @@
 language: ruby
+before_install: gem install bundler -v $BUNDLER_VERSION
 bundler_args: --without development
 matrix:
   include:
     - gemfile: Gemfile
       rvm: 2.1.1 # Just to make sure we're ready...
+      env:
+        BUNDLER_VERSION='>= 1.5.2, < 1.8.0'
     - gemfile: Gemfile
       rvm: 2.0.0
+      env:
+        BUNDLER_VERSION='>= 1.5.2, < 1.8.0'
     - gemfile: gemfiles/vagrant_1.7.gemfile
       rvm: 2.0.0
+      env:
+        BUNDLER_VERSION='>= 1.5.2, < 1.8.0'
     - gemfile: gemfiles/vagrant_1.6.gemfile
       rvm: 2.0.0
+      env:
+        BUNDLER_VERSION='>= 1.5.2, < 1.7.0'
     - gemfile: gemfiles/vagrant_1.5.gemfile
       rvm: 2.0.0
+      env:
+        BUNDLER_VERSION='= 1.5.2'
+    # The oldest Vagrant/Ruby/Bundler we support
     - gemfile: gemfiles/vagrant_1.5.0.gemfile
       rvm: 2.0.0
+      env:
+        BUNDLER_VERSION='= 1.5.2'

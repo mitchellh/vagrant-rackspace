@@ -13,6 +13,7 @@ end
 
 group :plugins do
   gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :tag => "v1.7.1"
+  gem "bundler", ">= 1.5.2", "< 1.8.0"
   
   gemspec :path => "../"
 end
