@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "bundler", "< 1.7.0", ">= 1.5.2"
-
 group :development do
   gem "coveralls", :require => false
   gem "pry"
@@ -11,7 +9,7 @@ group :development do
 end
 
 group :plugins do
-  gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :branch => "v1.5.0"
+  gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :tag => "v1.7.1"
   
   gemspec :path => "../"
 end

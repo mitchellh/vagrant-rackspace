@@ -9,7 +9,7 @@ group :development do
 end
 
 group :plugins do
-  gem "vagrant", :git => "https://github.com/maxlinc/vagrant", :branch => "winrmssl"
+  gem "vagrant", :git => "https://github.com/maxlinc/vagrant", :branch => "winrm-1.3"
   
   gemspec :path => "../"
 end

@@ -11,7 +11,7 @@ group :development do
 end
 
 group :plugins do
-  gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :branch => "v1.6.5"
+  gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :tag => "v1.6.5"
   
   gemspec :path => "../"
 end
