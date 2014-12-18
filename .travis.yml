@@ -1,5 +1,7 @@
 language: ruby
-before_install: gem install bundler -v "$BUNDLER_VERSION"
+before_install:
+  - gem uninstall bundler --all --force
+  - gem install bundler -v "$BUNDLER_VERSION"
 bundler_args: --without development
 matrix:
   include:
