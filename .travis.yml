@@ -1,5 +1,6 @@
 language: ruby
 before_install:
+  - rvm @global do gem uninstall bundler --all --force
   - gem uninstall bundler --all --force
   - gem install bundler -v "$BUNDLER_VERSION"
 bundler_args: --without development
