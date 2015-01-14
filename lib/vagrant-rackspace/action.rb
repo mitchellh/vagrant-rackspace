@@ -43,11 +43,7 @@ module VagrantPlugins
             end
 
             b2.use Provision
-            if defined?(SyncedFolders)
-              b2.use SyncedFolders
-            else
-              b2.use SyncFolders
-            end
+            b2.use SyncedFolders
           end
         end
       end
@@ -113,12 +109,10 @@ module VagrantPlugins
 
             b2.use ConnectRackspace
             b2.use Provision
-            if defined?(SyncedFolders)
-              b2.use SyncedFolders
-            else
-              b2.use SyncFolders
-            end
+            b2.use SyncedFolders
+            b2.use RunInitScript
             b2.use CreateServer
+            b2.use WaitForCommunicator
           end
         end
       end
@@ -164,6 +158,20 @@ module VagrantPlugins
         end
       end
 
+      def self.action_list_networks
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListNetworks
+        end
+      end
+
+      def self.action_list_servers
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConnectRackspace
+          b.use ListServers
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
@@ -174,7 +182,7 @@ module VagrantPlugins
       autoload :MessageNotCreated, action_root.join("message_not_created")
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
       autoload :ReadState, action_root.join("read_state")
-      autoload :SyncFolders, action_root.join("sync_folders")
+      autoload :RunInitScript, action_root.join("run_init_script")
       autoload :CreateImage, action_root.join("create_image")
       autoload :ListImages, action_root.join("list_images")
       autoload :ListFlavors, action_root.join("list_flavors")

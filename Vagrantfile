@@ -44,26 +44,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define :windows do |windows|
-    windows.vm.provision :shell, :inline => 'Write-Output "WinRM is working!"'
-    windows.vm.communicator = :winrm
-    windows.winrm.username = 'Administrator'
-    windows.winrm.password = ENV['VAGRANT_ADMIN_PASSWORD']
-    begin
-      windows.winrm.transport = :ssl
-      windows.winrm.ssl_peer_verification = false
-    rescue
-      puts "Warning: Vagrant #{Vagrant::VERSION} does not support WinRM over SSL."
-    end
-    windows.vm.synced_folder ".", "/vagrant", disabled: true
-    windows.vm.provider :rackspace do |rs|
-      rs.username = ENV['RAX_USERNAME']
-      rs.api_key  = ENV['RAX_API_KEY']
-      rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
-      rs.flavor   = /2 GB Performance/
-      rs.image    = 'Windows Server 2012'
-      rs.rackspace_region = ENV['RAX_REGION'] ||= 'dfw'
-      rs.init_script = File.read 'bootstrap.cmd'
+  if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.6.0')
+    config.vm.define :windows do |windows|
+      windows.vm.provision :shell, :inline => 'Write-Output "WinRM is working!"'
+      windows.vm.communicator = :winrm
+      windows.winrm.username = 'Administrator'
+      windows.winrm.password = ENV['VAGRANT_ADMIN_PASSWORD']
+      begin
+        windows.winrm.transport = :ssl
+        windows.winrm.ssl_peer_verification = false
+      rescue
+        puts "Warning: Vagrant #{Vagrant::VERSION} does not support WinRM over SSL."
+      end
+      windows.vm.synced_folder ".", "/vagrant", disabled: true
+      windows.vm.provider :rackspace do |rs|
+        rs.username = ENV['RAX_USERNAME']
+        rs.api_key  = ENV['RAX_API_KEY']
+        rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
+        rs.flavor   = /2 GB Performance/
+        rs.image    = 'Windows Server 2012'
+        rs.rackspace_region = ENV['RAX_REGION'] ||= 'dfw'
+        rs.init_script = File.read 'bootstrap.cmd'
+      end
     end
   end
 end

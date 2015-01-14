@@ -2,14 +2,19 @@
 
 source "https://rubygems.org"
 
+gem "bundler", "= 1.5.2"
+
 group :development do
-  gem "coveralls", :require => false
   gem "pry"
   gem "appraisal", "~> 1.0", :git => "https://github.com/maxlinc/appraisal", :branch => "gemspec_in_group"
 end
 
+group :test do
+  gem "coveralls", :require => false
+end
+
 group :plugins do
-  gem "vagrant", :git => "git://github.com/mitchellh/vagrant.git", :branch => "v1.3.5"
+  gem "vagrant", :git => "https://github.com/mitchellh/vagrant", :tag => "v1.5.4"
   
   gemspec :path => "../"
 end

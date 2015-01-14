@@ -153,10 +153,6 @@ module VagrantPlugins
               end
             end
 
-            # Wait for a communicator
-            env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_communicator",
-              :communicator => communicator, :address => server.public_ip_address))
-
             while true
               # If we're interrupted then just back out
               break if env[:interrupted]
@@ -167,7 +163,6 @@ module VagrantPlugins
             env[:ui].info(I18n.t("vagrant_rackspace.ready"))
           end
 
-          env[:machine].communicate.sudo config.init_script if config.init_script && communicator == :ssh
           @app.call(env)
         end
 
