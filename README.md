@@ -40,11 +40,12 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
-    rs.flavor   = /1 GB Performance/
-    rs.image    = /Ubuntu/
-    rs.metadata = {"key" => "value"}       # optional
+    rs.username         = "YOUR USERNAME"
+    rs.api_key          = "YOUR API KEY"
+    rs.rackspace_region = :ord
+    rs.flavor           = /1 GB Performance/
+    rs.image            = /Ubuntu/
+    rs.metadata         = {"key" => "value"}       # optional
   end
 end
 ```
