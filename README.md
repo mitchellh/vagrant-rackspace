@@ -56,14 +56,14 @@ will prevent accidentally divulging your keys.
 
 ```tcsh
     .tcshrc:
-        setenv RAX_USR "your-rackspace-user-name"
+        setenv RAX_USERNAME "your-rackspace-user-name"
         setenv RAX_REG ":region"
         setenv API_KEY "your-rackspace-api-key"
 ```
 
 ```bash
     .bashrc or .zshrc
-        export RAX_USR="your-rackspace-user-name"
+        export RAX_USERNAME="your-rackspace-user-name"
         export RAX_REG=":region"
         export API_KEY="your-rackspace-api-key"
 ```
@@ -76,8 +76,8 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username         = ENV['RAX_USR']
-    rs.api_key          = ENV['RAX_KEY']
+    rs.username         = ENV['RAX_USERNAME']
+    rs.api_key          = ENV['RAX_API_KEY']
     rs.rackspace_region = ENV['RAX_REG']
     rs.flavor           = /1 GB Performance/
     rs.image            = /Ubuntu/
@@ -122,8 +122,8 @@ Vagrant.configure("2") do |config|
   config.ssh.pty = true
 
   config.vm.provider :rackspace do |rs|
-    rs.username = ENV['RAX_USR']
-    rs.api_key  = ENV['RAX_KEY']
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
     rs.image    = /^CentOS/
     rs.init_script = 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
@@ -147,8 +147,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username = ENV['RAX_USR']
-    rs.api_key  = ENV['RAX_KEY']
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
     rs.image    = 'Windows Server 2012'
     rs.init_script = File.read 'bootstrap.cmd'
@@ -166,7 +166,7 @@ common parameters from your shell environment, for example:
 *Environment*
 ```tcsh
     .tcshrc:
-        setenv RAX_USR "your-rackspace-user-name"
+        setenv RAX_USERNAME "your-rackspace-user-name"
         setenv RAX_REG ":region"
         setenv API_KEY "your-rackspace-api-key"
         setenv VAGRANT_ADMIN_PASSWORD "your-vagrant-admin-password"
@@ -174,7 +174,7 @@ common parameters from your shell environment, for example:
 
 ```bash
     .bashrc or .zshrc
-        export RAX_USR="your-rackspace-user-name"
+        export RAX_USERNAME="your-rackspace-user-name"
         export RAX_REG=":region"
         export API_KEY="your-rackspace-api-key"
         export VAGRANT_ADMIN_PASSWORD="your-vagrant-admin-password"
@@ -194,9 +194,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :ubuntu do |ubuntu|
     ubuntu.ssh.private_key_path = '~/.ssh/id_rsa'
     ubuntu.vm.provider :rackspace do |rs|
-      rs.username = ENV['RAX_USR']
+      rs.username = ENV['RAX_USERNAME']
       rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
-      rs.api_key  = ENV['RAX_KEY']
+      rs.api_key  = ENV['RAX_API_KEY']
       rs.flavor   = /1 GB Performance/
       rs.image    = /Ubuntu/
       rs.rackspace_region = :iad
@@ -208,9 +208,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.ssh.private_key_path = '~/.ssh/id_rsa'
     centos.ssh.pty = true
     centos.vm.provider :rackspace do |rs|
-      rs.username = ENV['RAX_USR']
+      rs.username = ENV['RAX_USERNAME']
       rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
-      rs.api_key  = ENV['RAX_KEY']
+      rs.api_key  = ENV['RAX_API_KEY']
       rs.flavor   = /1 GB Performance/
       rs.image    = /^CentOS/ # Don't match OnMetal - CentOS
       rs.rackspace_region = :iad
@@ -232,8 +232,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     windows.vm.synced_folder ".", "/vagrant", disabled: true
     windows.vm.provider :rackspace do |rs|
-      rs.username = ENV['RAX_USR']
-      rs.api_key  = ENV['RAX_KEY']
+      rs.username = ENV['RAX_USERNAME']
+      rs.api_key  = ENV['RAX_API_KEY']
       rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
       rs.flavor   = /2 GB Performance/
       rs.image    = 'Windows Server 2012'
@@ -333,8 +333,8 @@ Vagrant.configure("2") do |config|
   # ... other stuff
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "mitchellh"
-    rs.api_key  = "foobarbaz"
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
   end
 end
 ```
@@ -352,8 +352,8 @@ However, you may attach a VM to an isolated [Cloud Network](http://www.rackspace
 
 ```ruby
 config.vm.provider :rackspace do |rs|
-  rs.username = "mitchellh"
-  rs.api_key  = "foobarbaz"
+  rs.username = ENV['RAX_USERNAME']
+  rs.api_key  = ENV['RAX_API_KEY']
   rs.network '443aff42-be57-effb-ad30-c097c1e4503f'
   rs.network '5e738e11-def2-4a75-ad1e-05bbe3b49efe'
   rs.network :service_net, :attached => false
