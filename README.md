@@ -40,8 +40,8 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username         = ENV['RAX_USR']
-    rs.api_key          = ENV['RAX_KEY']
+    rs.username         = "your-rackspace-user-name"
+    rs.api_key          = "your-rackspace-api-key"
     rs.rackspace_region = :ord
     rs.flavor           = /1 GB Performance/
     rs.image            = /Ubuntu/
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-Optionally, set up environment variables on your shell, for frequently used parameters,
+Set up environment variables on your shell, for frequently used parameters,
 especially your username and api key, if you plan to share your vagrant files. this 
 will prevent accidentally divulging your keys.
 
@@ -68,7 +68,7 @@ will prevent accidentally divulging your keys.
         export API_KEY="your-rackspace-api-key"
 ```
 
-Then, your vagrant file should look like this:
+Change your vagrant file to source your environment. It should look like this:
 
 ```ruby
 Vagrant.configure("2") do |config|
