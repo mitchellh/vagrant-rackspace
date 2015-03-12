@@ -40,9 +40,47 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username         = "YOUR USERNAME"
-    rs.api_key          = "YOUR API KEY"
+    rs.username         = ENV[RAX_USR]
+    rs.api_key          = ENV[RAX_KEY]
     rs.rackspace_region = :ord
+    rs.flavor           = /1 GB Performance/
+    rs.image            = /Ubuntu/
+    rs.metadata         = {"key" => "value"}       # optional
+  end
+end
+```
+
+Optionally, set up environment variables on your shell, for frequently used parameters,
+especially your username and api key, if you plan to share your vagrant files. this 
+will prevent accidentally divulging your keys.
+
+```tcsh
+    .tcshrc:
+        setenv RAX_USR "your-rackspace-user-name"
+        setenv RAX_REG ":region"
+        setenv API_KEY "your-rackspace-api-key"
+```
+
+
+```bash
+    .bashrc or .zshrc
+        export RAX_USR="your-rackspace-user-name"
+        export RAX_REG=":region"
+        export API_KEY="your-rackspace-api-key"
+```
+
+Then, your vagrant file should look like this:
+
+
+```ruby
+Vagrant.configure("2") do |config|
+  # The box is optional in newer versions of Vagrant
+  # config.vm.box = "dummy"
+
+  config.vm.provider :rackspace do |rs|
+    rs.username         = ENV[RAX_USR]
+    rs.api_key          = ENV[RAX_KEY]
+    rs.rackspace_region = ENV[RAX_REG]
     rs.flavor           = /1 GB Performance/
     rs.image            = /Ubuntu/
     rs.metadata         = {"key" => "value"}       # optional
@@ -86,8 +124,8 @@ Vagrant.configure("2") do |config|
   config.ssh.pty = true
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
+    rs.username = ENV[RAX_USR]
+    rs.api_key  = ENV[RAX_KEY]
     rs.flavor   = /1 GB Performance/
     rs.image    = /^CentOS/
     rs.init_script = 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
@@ -111,8 +149,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
+    rs.username = ENV[RAX_USR]
+    rs.api_key  = ENV[RAX_KEY]
     rs.flavor   = /1 GB Performance/
     rs.image    = 'Windows Server 2012'
     rs.init_script = File.read 'bootstrap.cmd'
