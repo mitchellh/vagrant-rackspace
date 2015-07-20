@@ -130,6 +130,11 @@ module VagrantPlugins
       # @see http://docs.rackspace.com/servers/api/v2/cs-devguide/content/Server_Personality-d1e2543.html Server Personality
       attr_accessor :init_script
 
+      # Network name to be use for connecting to the server. Particularly useful in case public network is disabled.
+      #
+      # @return [String]
+      attr_accessor :network_name
+
       # Default Rackspace Cloud Network IDs
       SERVICE_NET_ID = '11111111-1111-1111-1111-111111111111'
       PUBLIC_NET_ID = '00000000-0000-0000-0000-000000000000'

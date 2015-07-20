@@ -29,12 +29,19 @@ module VagrantPlugins
             return nil
           end
 
+          server_ip_address = machine.provider_config.network_name ?
+            ip_address(server, machine.provider_config.network_name) : server.public_ip_address
+
           # Read the DNS info
           return {
-            :host => server.ipv4_address,
-            :port => 22,
-            :username => "root"
+            :host => machine.config.ssh.host ? machine.config.ssh.host : server_ip_address,
+            :port => machine.config.ssh.port ? machine.config.ssh.port : 22,
+            :username => machine.config.ssh.username ? machine.config.ssh.username : 'root'
           }
+        end
+
+        def ip_address(server, network_name)
+          server.addresses[network_name].select{|a| a["version"] == 4}[0]["addr"] rescue ''
         end
       end
     end
