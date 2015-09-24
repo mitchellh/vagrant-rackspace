@@ -40,11 +40,48 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
-    rs.flavor   = /1 GB Performance/
-    rs.image    = /Ubuntu/
-    rs.metadata = {"key" => "value"}       # optional
+    rs.username         = "your-rackspace-user-name"
+    rs.api_key          = "your-rackspace-api-key"
+    rs.rackspace_region = :ord
+    rs.flavor           = /1 GB Performance/
+    rs.image            = /Ubuntu/
+    rs.metadata         = {"key" => "value"}       # optional
+  end
+end
+```
+
+Set up environment variables on your shell, for frequently used parameters,
+especially your username and api key, if you plan to share your vagrant files. this 
+will prevent accidentally divulging your keys.
+
+```tcsh
+    .tcshrc:
+        setenv RAX_USERNAME "your-rackspace-user-name"
+        setenv RAX_REG ":region"
+        setenv API_KEY "your-rackspace-api-key"
+```
+
+```bash
+    .bashrc or .zshrc
+        export RAX_USERNAME="your-rackspace-user-name"
+        export RAX_REG=":region"
+        export API_KEY="your-rackspace-api-key"
+```
+
+Change your vagrant file to source your environment. It should look like this:
+
+```ruby
+Vagrant.configure("2") do |config|
+  # The box is optional in newer versions of Vagrant
+  # config.vm.box = "dummy"
+
+  config.vm.provider :rackspace do |rs|
+    rs.username         = ENV['RAX_USERNAME']
+    rs.api_key          = ENV['RAX_API_KEY']
+    rs.rackspace_region = ENV['RAX_REG']
+    rs.flavor           = /1 GB Performance/
+    rs.image            = /Ubuntu/
+    rs.metadata         = {"key" => "value"}       # optional
   end
 end
 ```
@@ -85,8 +122,8 @@ Vagrant.configure("2") do |config|
   config.ssh.pty = true
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
     rs.image    = /^CentOS/
     rs.init_script = 'sed -i\'.bk\' -e \'s/^\(Defaults\s\+requiretty\)/# \1/\' /etc/sudoers'
@@ -110,8 +147,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "YOUR USERNAME"
-    rs.api_key  = "YOUR API KEY"
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
     rs.flavor   = /1 GB Performance/
     rs.image    = 'Windows Server 2012'
     rs.init_script = File.read 'bootstrap.cmd'
@@ -123,8 +160,28 @@ You can get a sample [bootstrap.cmd](bootstrap.cmd) file from this repo.
 
 ### Parallel, multi-machine setup
 
-You can define multiple machines in a single Vagrant file, for example:
+You can define multiple machines in a single Vagrant file, sourcing 
+common parameters from your shell environment, for example:
 
+*Environment*
+```tcsh
+    .tcshrc:
+        setenv RAX_USERNAME "your-rackspace-user-name"
+        setenv RAX_REG ":region"
+        setenv API_KEY "your-rackspace-api-key"
+        setenv VAGRANT_ADMIN_PASSWORD "your-vagrant-admin-password"
+```
+
+```bash
+    .bashrc or .zshrc
+        export RAX_USERNAME="your-rackspace-user-name"
+        export RAX_REG=":region"
+        export API_KEY="your-rackspace-api-key"
+        export VAGRANT_ADMIN_PASSWORD="your-vagrant-admin-password"
+```
+
+
+*Vagrantfile:*
 ```ruby
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -180,7 +237,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       rs.admin_password = ENV['VAGRANT_ADMIN_PASSWORD']
       rs.flavor   = /2 GB Performance/
       rs.image    = 'Windows Server 2012'
-      rs.rackspace_region = ENV['RAX_REGION'] ||= 'dfw'
+      rs.rackspace_region = ENV['RAX_REG'] ||= 'dfw'
       rs.init_script = File.read 'bootstrap.cmd'
     end
   end
@@ -276,8 +333,8 @@ Vagrant.configure("2") do |config|
   # ... other stuff
 
   config.vm.provider :rackspace do |rs|
-    rs.username = "mitchellh"
-    rs.api_key  = "foobarbaz"
+    rs.username = ENV['RAX_USERNAME']
+    rs.api_key  = ENV['RAX_API_KEY']
   end
 end
 ```
@@ -295,8 +352,8 @@ However, you may attach a VM to an isolated [Cloud Network](http://www.rackspace
 
 ```ruby
 config.vm.provider :rackspace do |rs|
-  rs.username = "mitchellh"
-  rs.api_key  = "foobarbaz"
+  rs.username = ENV['RAX_USERNAME']
+  rs.api_key  = ENV['RAX_API_KEY']
   rs.network '443aff42-be57-effb-ad30-c097c1e4503f'
   rs.network '5e738e11-def2-4a75-ad1e-05bbe3b49efe'
   rs.network :service_net, :attached => false
