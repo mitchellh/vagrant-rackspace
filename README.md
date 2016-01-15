@@ -25,7 +25,7 @@ $ vagrant plugin install vagrant-rackspace
 
 ## Usage
 
-One the plugin is installed, you use it with `vagrant up` by specifing
+Once the plugin is installed, you use it with `vagrant up` by specifing
 the `rackspace` provider:
 ```
 $ vagrant up --provider=rackspace
