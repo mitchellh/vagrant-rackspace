@@ -325,6 +325,7 @@ vagrant will authenticate against the UK authentication endpoint.
 * `disk_config` - Disk Configuration  'AUTO' or 'MANUAL'
 * `metadata` - A set of key pair values that will be passed to the instance
   for configuration.
+* `network_name` - Network name to be usd for communicating with the server.
 
 These can be set like typical provider-specific configuration:
 
