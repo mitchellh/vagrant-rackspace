@@ -175,18 +175,18 @@ module VagrantPlugins
       def self.action_rebuild
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
-          b.use Call, CheckState do |env, b2|
-            case env[:machine_state]
-            when :active, :off
-              b2.use ConnectRackspace
-              b2.use RebuildServer
-              b2.use Provision
-              b2.use SyncedFolders
-              b2.use RunInitScript
-              b2.use WaitForCommunicator
-            when :not_created
-              b2.use MessageNotCreated
+          b.use Call, IsCreated do |env, b1|
+            if !env[:result]
+              b1.use MessageNotCreated
+              next
             end
+
+            b1.use ConnectRackspace
+            b1.use RebuildServer
+            b1.use Provision
+            b1.use SyncedFolders
+            b1.use RunInitScript
+            b1.use WaitForCommunicator
           end
         end
       end
