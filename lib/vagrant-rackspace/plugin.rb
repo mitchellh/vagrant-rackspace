@@ -37,6 +37,11 @@ module VagrantPlugins
         require_relative "command/root"
         Command::Root
       end
+
+      command(:rebuild) do
+        require_relative 'command/rebuild'
+        Commands::Rebuild
+      end
     end
   end
 end

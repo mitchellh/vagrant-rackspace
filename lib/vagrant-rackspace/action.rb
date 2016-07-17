@@ -172,11 +172,31 @@ module VagrantPlugins
         end
       end
 
+      def self.action_rebuild
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use Call, IsCreated do |env, b1|
+            if !env[:result]
+              b1.use MessageNotCreated
+              next
+            end
+
+            b1.use ConnectRackspace
+            b1.use RebuildServer
+            b1.use Provision
+            b1.use SyncedFolders
+            b1.use RunInitScript
+            b1.use WaitForCommunicator
+          end
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectRackspace, action_root.join("connect_rackspace")
       autoload :CreateServer, action_root.join("create_server")
       autoload :DeleteServer, action_root.join("delete_server")
+      autoload :RebuildServer, action_root.join("rebuild_server")
       autoload :IsCreated, action_root.join("is_created")
       autoload :MessageAlreadyCreated, action_root.join("message_already_created")
       autoload :MessageNotCreated, action_root.join("message_not_created")
