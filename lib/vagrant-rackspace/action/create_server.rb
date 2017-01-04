@@ -117,7 +117,7 @@ module VagrantPlugins
 
           # Wait for the server to finish building
           env[:ui].info(I18n.t("vagrant_rackspace.waiting_for_build"))
-          retryable(:on => Fog::Errors::TimeoutError, :tries => 200) do
+          retryable(:on => [Excon::Error::Timeout, Fog::Errors::TimeoutError], :tries => 200) do
             # If we're interrupted don't worry about waiting
             next if env[:interrupted]
 
