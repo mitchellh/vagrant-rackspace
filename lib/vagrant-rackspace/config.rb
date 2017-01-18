@@ -155,7 +155,7 @@ module VagrantPlugins
 
       def finalize!
         @api_key  = nil if @api_key == UNSET_VALUE
-        @rackspace_region = nil if @rackspace_region == UNSET_VALUE
+        @rackspace_region = :dwf if @rackspace_region == UNSET_VALUE
         @rackspace_compute_url = nil if @rackspace_compute_url == UNSET_VALUE
         @rackspace_auth_url = nil if @rackspace_auth_url == UNSET_VALUE
         @flavor   = /512MB/ if @flavor == UNSET_VALUE
