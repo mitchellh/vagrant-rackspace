@@ -77,7 +77,7 @@ en:
         No matching image was found! Please check your image setting to
         make sure you have a valid image chosen.
       rsync_error: |-
-        There was an error when attemping to rsync a share folder.
+        There was an error when attempting to rsync a share folder.
         Please inspect the error message below for more info.
 
         Host path: %{hostpath}
